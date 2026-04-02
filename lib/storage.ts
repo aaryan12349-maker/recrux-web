@@ -4,7 +4,7 @@ const DEMO_SUBSCRIPTION_KEY = "recrux-demo-subscription";
 const DEMO_PLAN_KEY = "recrux-demo-plan";
 
 const ADMIN_AUTH_KEY = "recrux-admin-auth";
-const ADMIN_PASSWORD = "recrux-admin-2026";
+const ADMIN_PASSWORD = "12345678";
 
 export function getSavedAthletes(): string[] {
   if (typeof window === "undefined") return [];
