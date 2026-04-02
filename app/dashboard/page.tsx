@@ -14,7 +14,6 @@ const sports = [
 ];
 
 const genders = ["All", "Male", "Female"];
-
 const countries = ["All Countries", "Kenya", "Nigeria", "Tanzania", "Uganda"];
 
 export default function DashboardPage() {
@@ -57,30 +56,33 @@ export default function DashboardPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-neutral-400">
             Coach Dashboard
           </p>
+
           <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Discover international student-athletes in one place.
+                Evaluate talent with speed and clarity.
               </h1>
               <p className="mt-4 text-base leading-7 text-neutral-300 sm:text-lg">
-                RecruX helps college coaches evaluate talent from Kenya and across
-                Africa with clean athlete profiles, academic context, and recruiting-ready filtering.
+                Search and filter student-athletes by sport, gender, and country,
+                then save the profiles that belong on your recruiting board.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-4">
                 <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">
-                  Athletes
+                  Total
                 </p>
                 <p className="mt-2 text-2xl font-bold">{athletes.length}</p>
               </div>
+
               <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-4">
                 <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">
-                  Results
+                  Showing
                 </p>
                 <p className="mt-2 text-2xl font-bold">{filteredAthletes.length}</p>
               </div>
+
               <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-4 col-span-2 sm:col-span-1">
                 <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">
                   Markets
