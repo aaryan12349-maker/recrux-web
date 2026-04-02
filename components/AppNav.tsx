@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type AppNavProps = {
-  active?: "dashboard" | "saved" | "profile";
+  active?: "dashboard" | "saved" | "profile" | "pricing";
 };
 
 function navClass(isActive: boolean) {
@@ -49,7 +49,7 @@ export default function AppNav({ active }: AppNavProps) {
         "sticky top-4 z-50 mb-8 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
         visible
           ? "translate-y-0 opacity-100"
-          : "-translate-y-8 opacity-0 pointer-events-none",
+          : "-translate-y-8 pointer-events-none opacity-0",
       ].join(" ")}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between rounded-full bg-white/72 px-4 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 backdrop-blur-xl">
@@ -71,6 +71,10 @@ export default function AppNav({ active }: AppNavProps) {
 
           <Link href="/saved" className={navClass(active === "saved")}>
             Saved
+          </Link>
+
+          <Link href="/pricing" className={navClass(active === "pricing")}>
+            Pricing
           </Link>
 
           <Link

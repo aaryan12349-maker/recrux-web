@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AppNav from "../../components/AppNav";
+import MockAthletePortrait from "../../components/MockAthletePortrait";
 import { athletes } from "../../data/athletes";
 import { getSavedAthletes } from "../../lib/storage";
 
@@ -30,8 +31,8 @@ export default function SavedPage() {
                 Keep your shortlist beautifully organized.
               </h1>
               <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
-                Save athletes worth revisiting, compare profiles more calmly,
-                and build a cleaner recruiting board for your staff.
+                Save athletes you want to revisit, compare, or discuss with your
+                staff as you narrow your recruiting board.
               </p>
             </div>
 
@@ -67,7 +68,13 @@ export default function SavedPage() {
                   key={athlete.id}
                   className="group rounded-[32px] bg-white p-5 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_18px_44px_rgba(0,0,0,0.08)]"
                 >
-                  <div className="mb-5 h-52 rounded-[26px] bg-[linear-gradient(135deg,#d7d7da,#efeff1)] transition-transform duration-500 group-hover:scale-[1.015]" />
+                  <div className="mb-5 transition-transform duration-500 group-hover:scale-[1.015]">
+                    <MockAthletePortrait
+                      name={athlete.fullName}
+                      sport={athlete.sport}
+                      country={athlete.country}
+                    />
+                  </div>
 
                   <div className="flex items-start justify-between gap-4">
                     <div>

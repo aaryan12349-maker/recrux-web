@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AppNav from "../../components/AppNav";
 
 export default function PricingPage() {
   const plans = [
@@ -15,6 +16,7 @@ export default function PricingPage() {
         "Save athlete shortlist",
       ],
       cta: "Start Starter Plan",
+      href: "/checkout",
       featured: false,
     },
     {
@@ -31,6 +33,7 @@ export default function PricingPage() {
         "Future CRM and request workflows",
       ],
       cta: "Choose Pro",
+      href: "/checkout",
       featured: true,
     },
     {
@@ -47,38 +50,15 @@ export default function PricingPage() {
         "Future internal notes and collaboration tools",
       ],
       cta: "Contact for Team",
+      href: "/checkout",
       featured: false,
     },
   ];
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-8 text-[#1d1d1f]">
+    <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
       <div className="mx-auto max-w-7xl">
-        <header className="mb-10 flex items-center justify-between rounded-full bg-white/75 px-4 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 backdrop-blur-xl">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-xs font-semibold text-white">
-              RX
-            </div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-neutral-400">
-              RecruX
-            </p>
-          </Link>
-
-          <div className="flex items-center gap-2">
-            <Link
-              href="/login"
-              className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Coach Login
-            </Link>
-            <Link
-              href="/dashboard"
-              className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-neutral-800 ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Dashboard
-            </Link>
-          </div>
-        </header>
+        <AppNav active="pricing" />
 
         <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-12 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-16">
           <div className="max-w-4xl">
@@ -157,11 +137,9 @@ export default function PricingPage() {
               </div>
 
               <Link
-                href="/login"
+                href={plan.href}
                 className={`mt-8 inline-flex rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 ${
-                  plan.featured
-                    ? "bg-white text-black"
-                    : "bg-black text-white"
+                  plan.featured ? "bg-white text-black" : "bg-black text-white"
                 }`}
               >
                 {plan.cta}

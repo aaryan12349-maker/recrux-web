@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AppNav from "../../../components/AppNav";
+import MockAthletePortrait from "../../../components/MockAthletePortrait";
 import { athletes } from "../../../data/athletes";
 import {
   getSavedAthletes,
@@ -81,15 +82,13 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
 
         <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
           <div className="grid gap-8 xl:grid-cols-[420px_1fr]">
-            <div className="rounded-[36px] bg-[linear-gradient(135deg,#d7d7da,#efeff1)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-              <div className="flex h-[520px] items-end rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.35),rgba(255,255,255,0.05))] p-6">
-                <div className="rounded-[24px] bg-white/70 px-4 py-3 backdrop-blur">
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
-                    Athlete Profile
-                  </p>
-                  <p className="mt-2 text-lg font-semibold">{athlete.sport}</p>
-                </div>
-              </div>
+            <div className="rounded-[36px] bg-white p-5 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+              <MockAthletePortrait
+                name={athlete.fullName}
+                sport={athlete.sport}
+                country={athlete.country}
+                large
+              />
             </div>
 
             <div>
