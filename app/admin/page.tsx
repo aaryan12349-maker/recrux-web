@@ -1,26 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AppNav from "../../components/AppNav";
-import { athletes as initialAthletes } from "../../data/athletes";
+import {
+  getDefaultAdminAthletes,
+  getStoredAdminAthletes,
+  resetAdminAthletes,
+  saveAdminAthletes,
+  type AdminAthleteRecord,
+} from "../../lib/admin-storage";
 
-type AthleteRecord = {
-  id: string;
-  fullName: string;
-  country: string;
-  sport: string;
-  gender: string;
-  age: number;
-  gpa: number;
-  graduationYear: number;
-  academicInfo: string;
-  athleticStats: string;
-  bio: string;
-  video: string;
-  notes: string;
-};
-
-const emptyForm: AthleteRecord = {
+const emptyForm: AdminAthleteRecord = {
   id: "",
   fullName: "",
   country: "",
@@ -45,38 +35,38 @@ function makeId(name: string) {
 }
 
 export default function AdminPage() {
-  const [records, setRecords] = useState<AthleteRecord[]>(
-    initialAthletes.map((athlete) => ({
-      id: athlete.id,
-      fullName: athlete.fullName,
-      country: athlete.country,
-      sport: athlete.sport,
-      gender: athlete.gender,
-      age: athlete.age,
-      gpa: athlete.gpa,
-      graduationYear: athlete.graduationYear,
-      academicInfo: athlete.academicInfo,
-      athleticStats: athlete.athleticStats,
-      bio: athlete.bio,
-      video: athlete.video,
-      notes: athlete.notes,
-    }))
-  );
-
-  const [form, setForm] = useState<AthleteRecord>(emptyForm);
+  const [records, setRecords] = useState<AdminAthleteRecord[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [form, setForm] = useState<AdminAthleteRecord>(emptyForm);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [message, setMessage] = useState("Demo admin mode. Changes are local for now.");
+  const [message, setMessage] = useState("Loading admin data...");
+
+  useEffect(() => {
+    const stored = getStoredAdminAthletes();
+    setRecords(stored);
+    setLoaded(true);
+    setMessage("Admin data loaded. Changes now persist in this browser.");
+  }, []);
 
   const selectedAthlete = useMemo(
     () => records.find((athlete) => athlete.id === selectedId) ?? null,
     [records, selectedId]
   );
 
-  function updateField<K extends keyof AthleteRecord>(key: K, value: AthleteRecord[K]) {
+  function updateField<K extends keyof AdminAthleteRecord>(
+    key: K,
+    value: AdminAthleteRecord[K]
+  ) {
     setForm((current) => ({
       ...current,
       [key]: value,
     }));
+  }
+
+  function persist(nextRecords: AdminAthleteRecord[], nextMessage: string) {
+    setRecords(nextRecords);
+    saveAdminAthletes(nextRecords);
+    setMessage(nextMessage);
   }
 
   function handleAddAthlete(event: React.FormEvent<HTMLFormElement>) {
@@ -90,19 +80,19 @@ export default function AdminPage() {
 
     const id = makeId(trimmedName);
     if (records.some((athlete) => athlete.id === id)) {
-      setMessage("An athlete with that name already exists in demo mode.");
+      setMessage("An athlete with that name already exists.");
       return;
     }
 
-    const nextAthlete: AthleteRecord = {
+    const nextAthlete: AdminAthleteRecord = {
       ...form,
       id,
       fullName: trimmedName,
     };
 
-    setRecords((current) => [nextAthlete, ...current]);
+    const nextRecords = [nextAthlete, ...records];
+    persist(nextRecords, `Added ${trimmedName}. This will stay after refresh.`);
     setForm(emptyForm);
-    setMessage(`Added ${trimmedName} to the demo admin list.`);
   }
 
   function handleLoadAthlete(athleteId: string) {
@@ -111,7 +101,7 @@ export default function AdminPage() {
 
     setSelectedId(athleteId);
     setForm(athlete);
-    setMessage(`Loaded ${athlete.fullName} for review.`);
+    setMessage(`Loaded ${athlete.fullName} for editing.`);
   }
 
   function handleSaveChanges() {
@@ -120,39 +110,58 @@ export default function AdminPage() {
       return;
     }
 
-    setRecords((current) =>
-      current.map((athlete) =>
-        athlete.id === selectedId
-          ? {
-              ...athlete,
-              ...form,
-              id: selectedId,
-            }
-          : athlete
-      )
+    const nextRecords = records.map((athlete) =>
+      athlete.id === selectedId
+        ? {
+            ...athlete,
+            ...form,
+            id: selectedId,
+          }
+        : athlete
     );
 
-    setMessage(`Saved demo changes for ${form.fullName}.`);
+    persist(nextRecords, `Saved changes for ${form.fullName}.`);
   }
 
   function handleDeleteAthlete(id: string) {
     const athlete = records.find((item) => item.id === id);
     if (!athlete) return;
 
-    setRecords((current) => current.filter((item) => item.id !== id));
+    const nextRecords = records.filter((item) => item.id !== id);
+    persist(nextRecords, `Removed ${athlete.fullName}.`);
 
     if (selectedId === id) {
       setSelectedId(null);
       setForm(emptyForm);
     }
-
-    setMessage(`Removed ${athlete.fullName} from the demo admin list.`);
   }
 
   function handleResetForm() {
     setSelectedId(null);
     setForm(emptyForm);
     setMessage("Form reset. Ready to add a new athlete.");
+  }
+
+  function handleResetAllData() {
+    const defaults = getDefaultAdminAthletes();
+    resetAdminAthletes();
+    setRecords(defaults);
+    setSelectedId(null);
+    setForm(emptyForm);
+    setMessage("Reset admin data back to the original athlete list.");
+  }
+
+  if (!loaded) {
+    return (
+      <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+        <div className="mx-auto max-w-7xl">
+          <AppNav showAuthAction showAdminLink active="admin" />
+          <div className="rounded-[36px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            Loading admin data...
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -168,9 +177,8 @@ export default function AdminPage() {
                 Manage athlete data with clarity.
               </h1>
               <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
-                This is the internal control layer for RecruX. You can review the
-                athlete list, load a profile into the editor, make demo changes,
-                and add new athletes locally.
+                This is the internal control layer for RecruX. Changes made here
+                now persist in your browser and power the coach-facing experience.
               </p>
             </div>
 
@@ -184,9 +192,9 @@ export default function AdminPage() {
 
               <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
                 <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
-                  Mode
+                  Storage
                 </p>
-                <p className="mt-2 text-3xl font-semibold">Local</p>
+                <p className="mt-2 text-3xl font-semibold">Saved</p>
               </div>
             </div>
           </div>
@@ -198,7 +206,7 @@ export default function AdminPage() {
 
         <section className="mt-8 grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
-            <div className="mb-6 flex items-center justify-between gap-4">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-medium text-[#6e6e73]">Athlete Records</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
@@ -206,12 +214,20 @@ export default function AdminPage() {
                 </h2>
               </div>
 
-              <button
-                onClick={handleResetForm}
-                className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Add New Athlete
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleResetForm}
+                  className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Add New Athlete
+                </button>
+                <button
+                  onClick={handleResetAllData}
+                  className="rounded-full bg-[#fff1f1] px-5 py-2.5 text-sm font-medium text-[#b42318] transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Reset All
+                </button>
+              </div>
             </div>
 
             <div className="overflow-hidden rounded-[28px] border border-black/5">

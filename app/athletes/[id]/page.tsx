@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppNav from "../../../components/AppNav";
 import MockAthletePortrait from "../../../components/MockAthletePortrait";
-import { athletes } from "../../../data/athletes";
+import {
+  getStoredAdminAthletes,
+  type AdminAthleteRecord,
+} from "../../../lib/admin-storage";
 import {
   getSavedAthletes,
   hasActiveSubscription,
@@ -24,6 +27,7 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
   const router = useRouter();
   const [allowed, setAllowed] = useState(false);
   const [athleteId, setAthleteId] = useState("");
+  const [athletes, setAthletes] = useState<AdminAthleteRecord[]>([]);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -37,6 +41,7 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
       return;
     }
 
+    setAthletes(getStoredAdminAthletes());
     setAllowed(true);
   }, [router]);
 

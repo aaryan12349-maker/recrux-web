@@ -5,7 +5,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppNav from "../../components/AppNav";
 import MockAthletePortrait from "../../components/MockAthletePortrait";
-import { athletes } from "../../data/athletes";
+import {
+  getStoredAdminAthletes,
+  type AdminAthleteRecord,
+} from "../../lib/admin-storage";
 import {
   hasActiveSubscription,
   isDemoAuthenticated,
@@ -26,6 +29,7 @@ const countries = ["All Countries", "Kenya", "Nigeria", "Tanzania", "Uganda"];
 export default function DashboardPage() {
   const router = useRouter();
   const [allowed, setAllowed] = useState(false);
+  const [athletes, setAthletes] = useState<AdminAthleteRecord[]>([]);
   const [search, setSearch] = useState("");
   const [selectedSport, setSelectedSport] = useState("All Sports");
   const [selectedGender, setSelectedGender] = useState("All");
@@ -42,6 +46,7 @@ export default function DashboardPage() {
       return;
     }
 
+    setAthletes(getStoredAdminAthletes());
     setAllowed(true);
   }, [router]);
 
@@ -63,7 +68,7 @@ export default function DashboardPage() {
 
       return matchesSearch && matchesSport && matchesGender && matchesCountry;
     });
-  }, [search, selectedSport, selectedGender, selectedCountry]);
+  }, [athletes, search, selectedSport, selectedGender, selectedCountry]);
 
   if (!allowed) {
     return (
@@ -124,7 +129,9 @@ export default function DashboardPage() {
                 <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
                   Markets
                 </p>
-                <p className="mt-2 text-3xl font-semibold">4</p>
+                <p className="mt-2 text-3xl font-semibold">
+                  {new Set(athletes.map((athlete) => athlete.country)).size}
+                </p>
               </div>
             </div>
           </div>
