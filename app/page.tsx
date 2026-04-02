@@ -16,16 +16,16 @@ export default function Home() {
 
           <div className="flex items-center gap-2">
             <Link
+              href="/pricing"
+              className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-neutral-800 ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              Pricing
+            </Link>
+            <Link
               href="/login"
               className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
             >
               Coach Login
-            </Link>
-            <Link
-              href="/dashboard"
-              className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-neutral-800 ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Explore Demo
             </Link>
           </div>
         </div>
@@ -46,10 +46,10 @@ export default function Home() {
 
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
-                href="/login"
+                href="/pricing"
                 className="rounded-full bg-black px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
               >
-                Enter Coach Portal
+                Start With Pricing
               </Link>
               <Link
                 href="/dashboard"
@@ -58,6 +58,35 @@ export default function Home() {
                 Preview Athlete Board
               </Link>
             </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl bg-neutral-50 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                  Access
+                </p>
+                <p className="mt-3 text-sm leading-6 text-neutral-700">
+                  Built only for coaches, not for athlete messaging or public browsing.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-neutral-50 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                  Focus
+                </p>
+                <p className="mt-3 text-sm leading-6 text-neutral-700">
+                  Searchable profiles with academics, athletic performance, and recruiting notes.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-neutral-50 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                  Growth
+                </p>
+                <p className="mt-3 text-sm leading-6 text-neutral-700">
+                  Launching with Kenya first, with room to expand across Africa.
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="grid gap-6">
@@ -65,27 +94,41 @@ export default function Home() {
               <p className="text-sm font-medium text-white/60">Platform Snapshot</p>
               <div className="mt-8 grid gap-4">
                 <div className="rounded-[28px] bg-white/6 p-5 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">Athletes</p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">
+                    Athlete Profiles
+                  </p>
                   <p className="mt-2 text-4xl font-semibold">12</p>
                 </div>
                 <div className="rounded-[28px] bg-white/6 p-5 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">Sports</p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">
+                    Core Sports
+                  </p>
                   <p className="mt-2 text-4xl font-semibold">5</p>
                 </div>
                 <div className="rounded-[28px] bg-white/6 p-5 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">Markets</p>
-                  <p className="mt-2 text-4xl font-semibold">4</p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">
+                    User Journey
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-neutral-300">
+                    Login → browse athletes → filter → open profile → save athlete
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="rounded-[36px] bg-[linear-gradient(135deg,#ebe7df,#f8f7f3)] p-8 shadow-[0_12px_40px_rgba(0,0,0,0.05)]">
-              <p className="text-sm font-medium text-[#6e6e73]">Why it feels different</p>
+              <p className="text-sm font-medium text-[#6e6e73]">Monetization Ready</p>
               <div className="mt-6 space-y-4 text-[15px] leading-7 text-[#3a3a3c]">
-                <p>Only coaches have access to the database.</p>
-                <p>Athletes are presented as curated talent profiles, not social accounts.</p>
-                <p>The entire journey is built around fast recruiting review: log in, browse, filter, profile, save.</p>
+                <p>Subscription plans can be layered in cleanly.</p>
+                <p>Coach accounts can later unlock access based on billing status.</p>
+                <p>Stripe checkout and recurring billing can be connected when you’re ready.</p>
               </div>
+              <Link
+                href="/pricing"
+                className="mt-8 inline-flex rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
+              >
+                View Pricing
+              </Link>
             </div>
           </div>
         </div>
@@ -110,7 +153,9 @@ export default function Home() {
               <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
                 Search + filter
               </p>
-              <h3 className="mt-4 text-2xl font-semibold">Find the right athlete quickly.</h3>
+              <h3 className="mt-4 text-2xl font-semibold">
+                Find the right athlete quickly.
+              </h3>
               <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
                 Filter by sport, gender, and country while keeping the interface clean and easy to scan.
               </p>
@@ -120,7 +165,9 @@ export default function Home() {
               <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
                 Full profile context
               </p>
-              <h3 className="mt-4 text-2xl font-semibold">Academics and athletic performance together.</h3>
+              <h3 className="mt-4 text-2xl font-semibold">
+                Academics and athletic performance together.
+              </h3>
               <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
                 Coaches can evaluate GPA, graduation year, sport-specific notes, and bio in a single view.
               </p>
@@ -130,7 +177,9 @@ export default function Home() {
               <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
                 Saved board
               </p>
-              <h3 className="mt-4 text-2xl font-semibold">Shortlist without the clutter.</h3>
+              <h3 className="mt-4 text-2xl font-semibold">
+                Shortlist without the clutter.
+              </h3>
               <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
                 Save standout athletes and return to them later as your recruiting board evolves.
               </p>
