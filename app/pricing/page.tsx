@@ -16,7 +16,7 @@ export default function PricingPage() {
         "Save athlete shortlist",
       ],
       cta: "Start Starter Plan",
-      href: "/checkout",
+      href: "/checkout?plan=Starter",
       featured: false,
     },
     {
@@ -33,7 +33,7 @@ export default function PricingPage() {
         "Future CRM and request workflows",
       ],
       cta: "Choose Pro",
-      href: "/checkout",
+      href: "/checkout?plan=Pro",
       featured: true,
     },
     {
@@ -50,7 +50,7 @@ export default function PricingPage() {
         "Future internal notes and collaboration tools",
       ],
       cta: "Contact for Team",
-      href: "/checkout",
+      href: "/checkout?plan=Team",
       featured: false,
     },
   ];

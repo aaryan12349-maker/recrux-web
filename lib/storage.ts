@@ -1,6 +1,7 @@
 const SAVED_ATHLETES_KEY = "recrux-saved-athletes";
 const DEMO_AUTH_KEY = "recrux-demo-auth";
 const DEMO_SUBSCRIPTION_KEY = "recrux-demo-subscription";
+const DEMO_PLAN_KEY = "recrux-demo-plan";
 
 export function getSavedAthletes(): string[] {
   if (typeof window === "undefined") return [];
@@ -42,6 +43,9 @@ export function loginDemoUser() {
 export function logoutDemoUser() {
   if (typeof window === "undefined") return;
   localStorage.removeItem(DEMO_AUTH_KEY);
+  localStorage.removeItem(DEMO_SUBSCRIPTION_KEY);
+  localStorage.removeItem(DEMO_PLAN_KEY);
+  localStorage.removeItem(SAVED_ATHLETES_KEY);
 }
 
 export function hasActiveSubscription() {
@@ -49,8 +53,14 @@ export function hasActiveSubscription() {
   return localStorage.getItem(DEMO_SUBSCRIPTION_KEY) === "true";
 }
 
-export function activateDemoSubscription() {
+export function getDemoPlan() {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(DEMO_PLAN_KEY);
+}
+
+export function activateDemoSubscription(plan: string) {
   if (typeof window === "undefined") return;
   localStorage.setItem(DEMO_SUBSCRIPTION_KEY, "true");
   localStorage.setItem(DEMO_AUTH_KEY, "true");
+  localStorage.setItem(DEMO_PLAN_KEY, plan);
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  getDemoPlan,
   hasActiveSubscription,
   isDemoAuthenticated,
   logoutDemoUser,
@@ -35,10 +36,12 @@ export default function AppNav({
   const [visible, setVisible] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const [plan, setPlan] = useState<string | null>(null);
 
   useEffect(() => {
     setAuthenticated(isDemoAuthenticated());
     setSubscribed(hasActiveSubscription());
+    setPlan(getDemoPlan());
   }, []);
 
   useEffect(() => {
@@ -68,6 +71,8 @@ export default function AppNav({
   function handleLogout() {
     logoutDemoUser();
     setAuthenticated(false);
+    setSubscribed(false);
+    setPlan(null);
     router.push("/login");
   }
 
@@ -102,6 +107,12 @@ export default function AppNav({
               <Link href="/saved" className={navClass(active === "saved")}>
                 Saved
               </Link>
+
+              {plan ? (
+                <span className="hidden rounded-full bg-[#f5f5f7] px-4 py-2 text-sm font-medium text-[#6e6e73] lg:inline-flex">
+                  {plan} Plan
+                </span>
+              ) : null}
             </>
           ) : null}
 

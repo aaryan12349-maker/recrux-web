@@ -1,15 +1,23 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import AppNav from "../../components/AppNav";
 import { activateDemoSubscription } from "../../lib/storage";
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const plan = searchParams.get("plan") || "Pro";
+
+  function getPrice(selectedPlan: string) {
+    if (selectedPlan === "Starter") return "$99";
+    if (selectedPlan === "Team") return "$499";
+    return "$249";
+  }
 
   function handleActivateSubscription() {
-    activateDemoSubscription();
-    router.push("/dashboard");
+    activateDemoSubscription(plan);
+    router.push(`/checkout/success?plan=${encodeURIComponent(plan)}`);
   }
 
   return (
@@ -21,10 +29,11 @@ export default function CheckoutPage() {
           <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
             <p className="text-sm font-medium text-[#6e6e73]">Checkout</p>
             <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
-              Activate RecruX Pro.
+              Activate RecruX {plan}.
             </h1>
             <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
-              This is demo checkout for now. Clicking the button below activates a demo subscription and unlocks the dashboard.
+              This is demo checkout for now. Clicking the button below activates
+              a demo subscription and unlocks the dashboard.
             </p>
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -108,11 +117,12 @@ export default function CheckoutPage() {
                 <p className="text-sm font-medium text-white/60">Order Summary</p>
 
                 <h2 className="mt-4 text-3xl font-semibold tracking-[-0.03em]">
-                  RecruX Pro
+                  RecruX {plan}
                 </h2>
 
                 <p className="mt-3 text-[15px] leading-7 text-white/70">
-                  A premium coach-facing recruiting workspace for discovering and managing international student-athlete profiles.
+                  A premium coach-facing recruiting workspace for discovering and
+                  managing international student-athlete profiles.
                 </p>
 
                 <div className="mt-8 space-y-3">
@@ -133,7 +143,7 @@ export default function CheckoutPage() {
                 <div className="mt-10 flex items-end justify-between border-t border-white/10 pt-6">
                   <div>
                     <p className="text-sm text-white/50">Due today</p>
-                    <p className="mt-2 text-4xl font-semibold">$249</p>
+                    <p className="mt-2 text-4xl font-semibold">{getPrice(plan)}</p>
                   </div>
                   <p className="text-sm text-white/50">per month</p>
                 </div>
