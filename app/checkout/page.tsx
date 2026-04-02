@@ -1,13 +1,22 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import AppNav from "../../components/AppNav";
 import { activateDemoSubscription } from "../../lib/storage";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const plan = searchParams.get("plan") || "Pro";
+  const [plan, setPlan] = useState("Pro");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const selectedPlan = params.get("plan");
+
+    if (selectedPlan === "Starter" || selectedPlan === "Pro" || selectedPlan === "Team") {
+      setPlan(selectedPlan);
+    }
+  }, []);
 
   function getPrice(selectedPlan: string) {
     if (selectedPlan === "Starter") return "$99";

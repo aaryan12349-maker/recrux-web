@@ -1,12 +1,20 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import AppNav from "../../../components/AppNav";
 
 export default function CheckoutSuccessPage() {
-  const searchParams = useSearchParams();
-  const plan = searchParams.get("plan") || "Pro";
+  const [plan, setPlan] = useState("Pro");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const selectedPlan = params.get("plan");
+
+    if (selectedPlan === "Starter" || selectedPlan === "Pro" || selectedPlan === "Team") {
+      setPlan(selectedPlan);
+    }
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
