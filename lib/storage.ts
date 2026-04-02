@@ -3,6 +3,9 @@ const DEMO_AUTH_KEY = "recrux-demo-auth";
 const DEMO_SUBSCRIPTION_KEY = "recrux-demo-subscription";
 const DEMO_PLAN_KEY = "recrux-demo-plan";
 
+const ADMIN_AUTH_KEY = "recrux-admin-auth";
+const ADMIN_PASSWORD = "recrux-admin-2026";
+
 export function getSavedAthletes(): string[] {
   if (typeof window === "undefined") return [];
 
@@ -63,4 +66,26 @@ export function activateDemoSubscription(plan: string) {
   localStorage.setItem(DEMO_SUBSCRIPTION_KEY, "true");
   localStorage.setItem(DEMO_AUTH_KEY, "true");
   localStorage.setItem(DEMO_PLAN_KEY, plan);
+}
+
+export function isAdminAuthenticated() {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(ADMIN_AUTH_KEY) === "true";
+}
+
+export function loginAdminUser(password: string) {
+  if (typeof window === "undefined") return false;
+
+  const isValid = password === ADMIN_PASSWORD;
+
+  if (isValid) {
+    localStorage.setItem(ADMIN_AUTH_KEY, "true");
+  }
+
+  return isValid;
+}
+
+export function logoutAdminUser() {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(ADMIN_AUTH_KEY);
 }

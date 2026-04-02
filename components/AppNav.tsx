@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 import {
   getDemoPlan,
   hasActiveSubscription,
+  isAdminAuthenticated,
   isDemoAuthenticated,
+  logoutAdminUser,
   logoutDemoUser,
 } from "../lib/storage";
 
@@ -16,6 +18,7 @@ type AppNavProps = {
   showAppLinks?: boolean;
   showAuthAction?: boolean;
   showAdminLink?: boolean;
+  showAdminAction?: boolean;
 };
 
 function navClass(isActive: boolean) {
@@ -33,16 +36,19 @@ export default function AppNav({
   showAppLinks = false,
   showAuthAction = false,
   showAdminLink = false,
+  showAdminAction = false,
 }: AppNavProps) {
   const router = useRouter();
   const [visible, setVisible] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const [adminAuthenticated, setAdminAuthenticated] = useState(false);
   const [plan, setPlan] = useState<string | null>(null);
 
   useEffect(() => {
     setAuthenticated(isDemoAuthenticated());
     setSubscribed(hasActiveSubscription());
+    setAdminAuthenticated(isAdminAuthenticated());
     setPlan(getDemoPlan());
   }, []);
 
@@ -76,6 +82,12 @@ export default function AppNav({
     setSubscribed(false);
     setPlan(null);
     router.push("/login");
+  }
+
+  function handleAdminExit() {
+    logoutAdminUser();
+    setAdminAuthenticated(false);
+    router.push("/");
   }
 
   return (
@@ -124,10 +136,19 @@ export default function AppNav({
             </Link>
           ) : null}
 
-          {showAdminLink ? (
+          {showAdminLink && adminAuthenticated ? (
             <Link href="/admin" className={navClass(active === "admin")}>
               Admin
             </Link>
+          ) : null}
+
+          {showAdminAction && adminAuthenticated ? (
+            <button
+              onClick={handleAdminExit}
+              className="rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 transition-all duration-300 hover:bg-neutral-200"
+            >
+              Exit Admin
+            </button>
           ) : null}
 
           {showAuthAction ? (

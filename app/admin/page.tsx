@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import AppNav from "../../components/AppNav";
 import {
   getDefaultAdminAthletes,
@@ -10,6 +11,7 @@ import {
   type AdminAthleteRecord,
   type RecruitingStatus,
 } from "../../lib/admin-storage";
+import { isAdminAuthenticated } from "../../lib/storage";
 
 const statuses: RecruitingStatus[] = [
   "New",
@@ -45,18 +47,24 @@ function makeId(name: string) {
 }
 
 export default function AdminPage() {
+  const router = useRouter();
   const [records, setRecords] = useState<AdminAthleteRecord[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [form, setForm] = useState<AdminAthleteRecord>(emptyForm);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [message, setMessage] = useState("Loading admin data...");
+  const [message, setMessage] = useState("Checking admin access...");
 
   useEffect(() => {
+    if (!isAdminAuthenticated()) {
+      router.replace("/admin-login");
+      return;
+    }
+
     const stored = getStoredAdminAthletes();
     setRecords(stored);
     setLoaded(true);
     setMessage("Admin data loaded. Changes now persist in this browser.");
-  }, []);
+  }, [router]);
 
   const selectedAthlete = useMemo(
     () => records.find((athlete) => athlete.id === selectedId) ?? null,
@@ -165,9 +173,9 @@ export default function AdminPage() {
     return (
       <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
         <div className="mx-auto max-w-7xl">
-          <AppNav showAuthAction showAdminLink active="admin" />
+          <AppNav active="admin" showAdminLink showAdminAction />
           <div className="rounded-[36px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
-            Loading admin data...
+            Checking admin access...
           </div>
         </div>
       </main>
@@ -177,7 +185,7 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
       <div className="mx-auto max-w-7xl">
-        <AppNav showAuthAction showAdminLink active="admin" />
+        <AppNav active="admin" showAdminLink showAdminAction />
 
         <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
           <div className="flex flex-col gap-10 xl:flex-row xl:items-start xl:justify-between">
