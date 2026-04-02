@@ -2,9 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  hasActiveSubscription,
+  isDemoAuthenticated,
+  logoutDemoUser,
+} from "../lib/storage";
 
 type AppNavProps = {
   active?: "dashboard" | "saved" | "profile" | "pricing";
+  showPricing?: boolean;
+  showAppLinks?: boolean;
+  showAuthAction?: boolean;
 };
 
 function navClass(isActive: boolean) {
@@ -16,8 +25,21 @@ function navClass(isActive: boolean) {
   ].join(" ");
 }
 
-export default function AppNav({ active }: AppNavProps) {
+export default function AppNav({
+  active,
+  showPricing = false,
+  showAppLinks = false,
+  showAuthAction = false,
+}: AppNavProps) {
+  const router = useRouter();
   const [visible, setVisible] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+
+  useEffect(() => {
+    setAuthenticated(isDemoAuthenticated());
+    setSubscribed(hasActiveSubscription());
+  }, []);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -43,6 +65,12 @@ export default function AppNav({ active }: AppNavProps) {
     };
   }, []);
 
+  function handleLogout() {
+    logoutDemoUser();
+    setAuthenticated(false);
+    router.push("/login");
+  }
+
   return (
     <header
       className={[
@@ -65,24 +93,41 @@ export default function AppNav({ active }: AppNavProps) {
         </Link>
 
         <nav className="flex items-center gap-2">
-          <Link href="/dashboard" className={navClass(active === "dashboard")}>
-            Dashboard
-          </Link>
+          {showAppLinks && authenticated && subscribed ? (
+            <>
+              <Link href="/dashboard" className={navClass(active === "dashboard")}>
+                Dashboard
+              </Link>
 
-          <Link href="/saved" className={navClass(active === "saved")}>
-            Saved
-          </Link>
+              <Link href="/saved" className={navClass(active === "saved")}>
+                Saved
+              </Link>
+            </>
+          ) : null}
 
-          <Link href="/pricing" className={navClass(active === "pricing")}>
-            Pricing
-          </Link>
+          {showPricing ? (
+            <Link href="/pricing" className={navClass(active === "pricing")}>
+              Pricing
+            </Link>
+          ) : null}
 
-          <Link
-            href="/login"
-            className="rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 transition-all duration-300 hover:bg-neutral-200"
-          >
-            Logout
-          </Link>
+          {showAuthAction ? (
+            authenticated ? (
+              <button
+                onClick={handleLogout}
+                className="rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 transition-all duration-300 hover:bg-neutral-200"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className="rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 transition-all duration-300 hover:bg-neutral-200"
+              >
+                Login
+              </Link>
+            )
+          ) : null}
         </nav>
       </div>
     </header>

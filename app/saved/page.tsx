@@ -2,26 +2,61 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import AppNav from "../../components/AppNav";
 import MockAthletePortrait from "../../components/MockAthletePortrait";
 import { athletes } from "../../data/athletes";
-import { getSavedAthletes } from "../../lib/storage";
+import {
+  getSavedAthletes,
+  hasActiveSubscription,
+  isDemoAuthenticated,
+} from "../../lib/storage";
 
 export default function SavedPage() {
+  const router = useRouter();
+  const [allowed, setAllowed] = useState(false);
   const [savedIds, setSavedIds] = useState<string[]>([]);
 
   useEffect(() => {
+    if (!isDemoAuthenticated()) {
+      router.replace("/login");
+      return;
+    }
+
+    if (!hasActiveSubscription()) {
+      router.replace("/pricing");
+      return;
+    }
+
     setSavedIds(getSavedAthletes());
-  }, []);
+    setAllowed(true);
+  }, [router]);
 
   const savedAthletes = athletes.filter((athlete) =>
     savedIds.includes(athlete.id)
   );
 
+  if (!allowed) {
+    return (
+      <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+        <div className="mx-auto max-w-4xl">
+          <div className="rounded-[36px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            <h1 className="text-3xl font-semibold tracking-[-0.03em]">
+              Checking access...
+            </h1>
+            <p className="mt-3 text-lg text-[#6e6e73]">
+              Redirecting you to the right place.
+            </p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
       <div className="mx-auto max-w-7xl">
-        <AppNav active="saved" />
+        <AppNav active="saved" showAppLinks showAuthAction />
 
         <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
           <div className="flex flex-col gap-10 xl:flex-row xl:items-start xl:justify-between">

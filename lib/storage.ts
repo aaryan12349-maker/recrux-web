@@ -1,4 +1,6 @@
 const SAVED_ATHLETES_KEY = "recrux-saved-athletes";
+const DEMO_AUTH_KEY = "recrux-demo-auth";
+const DEMO_SUBSCRIPTION_KEY = "recrux-demo-subscription";
 
 export function getSavedAthletes(): string[] {
   if (typeof window === "undefined") return [];
@@ -11,12 +13,8 @@ export function saveAthlete(id: string) {
   if (typeof window === "undefined") return;
 
   const current = getSavedAthletes();
-
   if (!current.includes(id)) {
-    localStorage.setItem(
-      SAVED_ATHLETES_KEY,
-      JSON.stringify([...current, id])
-    );
+    localStorage.setItem(SAVED_ATHLETES_KEY, JSON.stringify([...current, id]));
   }
 }
 
@@ -29,4 +27,30 @@ export function removeSavedAthlete(id: string) {
 
 export function isAthleteSaved(id: string) {
   return getSavedAthletes().includes(id);
+}
+
+export function isDemoAuthenticated() {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(DEMO_AUTH_KEY) === "true";
+}
+
+export function loginDemoUser() {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(DEMO_AUTH_KEY, "true");
+}
+
+export function logoutDemoUser() {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(DEMO_AUTH_KEY);
+}
+
+export function hasActiveSubscription() {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(DEMO_SUBSCRIPTION_KEY) === "true";
+}
+
+export function activateDemoSubscription() {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(DEMO_SUBSCRIPTION_KEY, "true");
+  localStorage.setItem(DEMO_AUTH_KEY, "true");
 }

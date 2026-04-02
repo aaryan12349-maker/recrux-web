@@ -1,7 +1,17 @@
-import Link from "next/link";
+"use client";
+
+import { useRouter } from "next/navigation";
 import AppNav from "../../components/AppNav";
+import { activateDemoSubscription } from "../../lib/storage";
 
 export default function CheckoutPage() {
+  const router = useRouter();
+
+  function handleActivateSubscription() {
+    activateDemoSubscription();
+    router.push("/dashboard");
+  }
+
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
       <div className="mx-auto max-w-7xl">
@@ -11,11 +21,10 @@ export default function CheckoutPage() {
           <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
             <p className="text-sm font-medium text-[#6e6e73]">Checkout</p>
             <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
-              Start with RecruX Pro.
+              Activate RecruX Pro.
             </h1>
             <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
-              This is a premium mock checkout flow for now. Later, we can connect
-              Stripe to make subscriptions and billing fully functional.
+              This is demo checkout for now. Clicking the button below activates a demo subscription and unlocks the dashboard.
             </p>
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -103,8 +112,7 @@ export default function CheckoutPage() {
                 </h2>
 
                 <p className="mt-3 text-[15px] leading-7 text-white/70">
-                  A premium coach-facing recruiting workspace for discovering and
-                  managing international student-athlete profiles.
+                  A premium coach-facing recruiting workspace for discovering and managing international student-athlete profiles.
                 </p>
 
                 <div className="mt-8 space-y-3">
@@ -130,13 +138,15 @@ export default function CheckoutPage() {
                   <p className="text-sm text-white/50">per month</p>
                 </div>
 
-                <button className="mt-8 w-full rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition-all duration-300 hover:-translate-y-0.5">
-                  Complete Subscription
+                <button
+                  onClick={handleActivateSubscription}
+                  className="mt-8 w-full rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Activate Demo Subscription
                 </button>
 
                 <p className="mt-4 text-xs leading-6 text-white/45">
-                  Demo-only checkout UI. Stripe billing and subscription access
-                  can be connected later.
+                  Demo-only checkout. This button unlocks the platform locally.
                 </p>
               </div>
             </div>

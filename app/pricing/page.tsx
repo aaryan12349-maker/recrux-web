@@ -64,11 +64,11 @@ export default function PricingPage() {
           <div className="max-w-4xl">
             <p className="text-sm font-medium text-[#6e6e73]">Pricing</p>
             <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-7xl">
-              Pricing built for recruiting programs that want clarity.
+              Access the platform through a subscription plan.
             </h1>
             <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
-              Start with a focused coach workflow today, then scale into a larger
-              recruiting operation as RecruX expands across Africa.
+              In demo mode, choosing a plan takes you to checkout, where access
+              gets activated and the dashboard unlocks.
             </p>
           </div>
         </section>
@@ -139,25 +139,15 @@ export default function PricingPage() {
               <Link
                 href={plan.href}
                 className={`mt-8 inline-flex rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 ${
-                  plan.featured ? "bg-white text-black" : "bg-black text-white"
+                  plan.featured
+                    ? "bg-white text-black"
+                    : "bg-black text-white"
                 }`}
               >
                 {plan.cta}
               </Link>
             </article>
           ))}
-        </section>
-
-        <section className="mt-10 rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
-          <p className="text-sm font-medium text-[#6e6e73]">What comes next</p>
-          <h2 className="mt-3 text-4xl font-semibold tracking-[-0.03em]">
-            Payments can be connected when you’re ready.
-          </h2>
-          <p className="mt-4 max-w-3xl text-lg leading-8 text-[#6e6e73]">
-            This pricing page is product-ready visually. Later, we can connect
-            Stripe checkout, subscriptions, billing logic, and coach account access
-            so payment actually unlocks the platform.
-          </p>
         </section>
       </div>
     </main>

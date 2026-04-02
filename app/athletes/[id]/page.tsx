@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import AppNav from "../../../components/AppNav";
 import MockAthletePortrait from "../../../components/MockAthletePortrait";
 import { athletes } from "../../../data/athletes";
 import {
   getSavedAthletes,
+  hasActiveSubscription,
+  isDemoAuthenticated,
   removeSavedAthlete,
   saveAthlete,
 } from "../../../lib/storage";
@@ -18,8 +21,24 @@ type AthletePageProps = {
 };
 
 export default function AthleteProfilePage({ params }: AthletePageProps) {
+  const router = useRouter();
+  const [allowed, setAllowed] = useState(false);
   const [athleteId, setAthleteId] = useState("");
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    if (!isDemoAuthenticated()) {
+      router.replace("/login");
+      return;
+    }
+
+    if (!hasActiveSubscription()) {
+      router.replace("/pricing");
+      return;
+    }
+
+    setAllowed(true);
+  }, [router]);
 
   useEffect(() => {
     async function loadParams() {
@@ -50,11 +69,28 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
     }
   }
 
+  if (!allowed) {
+    return (
+      <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+        <div className="mx-auto max-w-4xl">
+          <div className="rounded-[36px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            <h1 className="text-3xl font-semibold tracking-[-0.03em]">
+              Checking access...
+            </h1>
+            <p className="mt-3 text-lg text-[#6e6e73]">
+              Redirecting you to the right place.
+            </p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   if (!athlete) {
     return (
       <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
         <div className="mx-auto max-w-7xl">
-          <AppNav active="profile" />
+          <AppNav active="profile" showAppLinks showAuthAction />
           <div className="rounded-[32px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
             <h1 className="text-3xl font-semibold tracking-[-0.03em]">
               Athlete not found.
@@ -71,7 +107,7 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
       <div className="mx-auto max-w-7xl">
-        <AppNav active="profile" />
+        <AppNav active="profile" showAppLinks showAuthAction />
 
         <Link
           href="/dashboard"
