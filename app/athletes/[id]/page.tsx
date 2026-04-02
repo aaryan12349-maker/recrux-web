@@ -9,6 +9,7 @@ import {
   getStoredAdminAthletes,
   type AdminAthleteRecord,
 } from "../../../lib/admin-storage";
+import { addInfoRequest } from "../../../lib/requests-storage";
 import {
   getSavedAthletes,
   hasActiveSubscription,
@@ -23,12 +24,23 @@ type AthletePageProps = {
   }>;
 };
 
+function makeRequestId() {
+  return `request-${Date.now()}`;
+}
+
 export default function AthleteProfilePage({ params }: AthletePageProps) {
   const router = useRouter();
   const [allowed, setAllowed] = useState(false);
   const [athleteId, setAthleteId] = useState("");
   const [athletes, setAthletes] = useState<AdminAthleteRecord[]>([]);
   const [saved, setSaved] = useState(false);
+
+  const [showRequestForm, setShowRequestForm] = useState(false);
+  const [requestCoachName, setRequestCoachName] = useState("");
+  const [requestCoachEmail, setRequestCoachEmail] = useState("");
+  const [requestSchool, setRequestSchool] = useState("");
+  const [requestMessage, setRequestMessage] = useState("");
+  const [requestNotice, setRequestNotice] = useState("");
 
   useEffect(() => {
     if (!isDemoAuthenticated()) {
@@ -72,6 +84,41 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
       saveAthlete(athleteId);
       setSaved(true);
     }
+  }
+
+  function handleRequestSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!athlete) return;
+
+    if (
+      !requestCoachName.trim() ||
+      !requestCoachEmail.trim() ||
+      !requestSchool.trim() ||
+      !requestMessage.trim()
+    ) {
+      setRequestNotice("Fill in all request fields first.");
+      return;
+    }
+
+    addInfoRequest({
+      id: makeRequestId(),
+      athleteId: athlete.id,
+      athleteName: athlete.fullName,
+      coachName: requestCoachName.trim(),
+      coachEmail: requestCoachEmail.trim(),
+      school: requestSchool.trim(),
+      message: requestMessage.trim(),
+      createdAt: new Date().toISOString(),
+      status: "New",
+    });
+
+    setRequestCoachName("");
+    setRequestCoachEmail("");
+    setRequestSchool("");
+    setRequestMessage("");
+    setShowRequestForm(false);
+    setRequestNotice(`Request sent for ${athlete.fullName}.`);
   }
 
   if (!allowed) {
@@ -194,7 +241,13 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
                   {saved ? "Saved Athlete" : "Save Athlete"}
                 </button>
 
-                <button className="rounded-full bg-white px-6 py-3 text-sm font-medium text-[#1d1d1f] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5">
+                <button
+                  onClick={() => {
+                    setShowRequestForm((current) => !current);
+                    setRequestNotice("");
+                  }}
+                  className="rounded-full bg-white px-6 py-3 text-sm font-medium text-[#1d1d1f] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
+                >
                   Request More Info
                 </button>
               </div>
@@ -202,6 +255,89 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
               <p className="mt-4 text-sm text-[#86868b]">
                 Coach-facing only. Athlete communication and CRM workflow can be connected later.
               </p>
+
+              {requestNotice ? (
+                <div className="mt-6 rounded-[24px] bg-[#f3f8f3] px-5 py-4 text-sm font-medium text-[#1f6f43] ring-1 ring-[#1f6f43]/10">
+                  {requestNotice}
+                </div>
+              ) : null}
+
+              {showRequestForm ? (
+                <form
+                  onSubmit={handleRequestSubmit}
+                  className="mt-6 rounded-[32px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5"
+                >
+                  <p className="text-sm font-medium text-[#6e6e73]">Info Request</p>
+                  <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+                    Request details for {athlete.fullName}
+                  </h2>
+
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                        Coach name
+                      </label>
+                      <input
+                        value={requestCoachName}
+                        onChange={(event) => setRequestCoachName(event.target.value)}
+                        className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                        Coach email
+                      </label>
+                      <input
+                        type="email"
+                        value={requestCoachEmail}
+                        onChange={(event) => setRequestCoachEmail(event.target.value)}
+                        className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                      School / Program
+                    </label>
+                    <input
+                      value={requestSchool}
+                      onChange={(event) => setRequestSchool(event.target.value)}
+                      className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    />
+                  </div>
+
+                  <div className="mt-4">
+                    <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                      Request message
+                    </label>
+                    <textarea
+                      value={requestMessage}
+                      onChange={(event) => setRequestMessage(event.target.value)}
+                      rows={4}
+                      className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    />
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <button
+                      type="submit"
+                      className="rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
+                    >
+                      Send Request
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowRequestForm(false)}
+                      className="rounded-full bg-white px-6 py-3 text-sm font-medium text-[#6e6e73] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : null}
             </div>
           </div>
         </section>

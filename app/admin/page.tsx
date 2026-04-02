@@ -11,6 +11,12 @@ import {
   type AdminAthleteRecord,
   type RecruitingStatus,
 } from "../../lib/admin-storage";
+import {
+  deleteRequest,
+  getStoredRequests,
+  markRequestReviewed,
+  type InfoRequestRecord,
+} from "../../lib/requests-storage";
 import { isAdminAuthenticated } from "../../lib/storage";
 
 const statuses: RecruitingStatus[] = [
@@ -46,9 +52,15 @@ function makeId(name: string) {
     .replace(/\s+/g, "-");
 }
 
+function formatRequestDate(value: string) {
+  const date = new Date(value);
+  return date.toLocaleDateString();
+}
+
 export default function AdminPage() {
   const router = useRouter();
   const [records, setRecords] = useState<AdminAthleteRecord[]>([]);
+  const [requests, setRequests] = useState<InfoRequestRecord[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [form, setForm] = useState<AdminAthleteRecord>(emptyForm);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -60,8 +72,8 @@ export default function AdminPage() {
       return;
     }
 
-    const stored = getStoredAdminAthletes();
-    setRecords(stored);
+    setRecords(getStoredAdminAthletes());
+    setRequests(getStoredRequests());
     setLoaded(true);
     setMessage("Admin data loaded. Changes now persist in this browser.");
   }, [router]);
@@ -70,6 +82,13 @@ export default function AdminPage() {
     () => records.find((athlete) => athlete.id === selectedId) ?? null,
     [records, selectedId]
   );
+
+  function refreshRequests(nextMessage?: string) {
+    setRequests(getStoredRequests());
+    if (nextMessage) {
+      setMessage(nextMessage);
+    }
+  }
 
   function updateField<K extends keyof AdminAthleteRecord>(
     key: K,
@@ -169,6 +188,16 @@ export default function AdminPage() {
     setMessage("Reset admin data back to the original athlete list.");
   }
 
+  function handleMarkReviewed(id: string) {
+    markRequestReviewed(id);
+    refreshRequests("Marked request as reviewed.");
+  }
+
+  function handleDeleteRequest(id: string) {
+    deleteRequest(id);
+    refreshRequests("Removed request from the admin queue.");
+  }
+
   if (!loaded) {
     return (
       <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
@@ -200,12 +229,19 @@ export default function AdminPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 xl:min-w-[260px]">
+            <div className="grid grid-cols-3 gap-4 xl:min-w-[390px]">
               <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
                 <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
                   Athletes
                 </p>
                 <p className="mt-2 text-3xl font-semibold">{records.length}</p>
+              </div>
+
+              <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                  Requests
+                </p>
+                <p className="mt-2 text-3xl font-semibold">{requests.length}</p>
               </div>
 
               <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
@@ -221,6 +257,64 @@ export default function AdminPage() {
         <div className="mt-8 rounded-[28px] bg-[#111111] px-6 py-4 text-sm text-white shadow-[0_12px_36px_rgba(0,0,0,0.12)]">
           {message}
         </div>
+
+        <section className="mt-8 rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <p className="text-sm font-medium text-[#6e6e73]">Coach Requests</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+            Request more info queue
+          </h2>
+
+          <div className="mt-6 space-y-4">
+            {requests.length === 0 ? (
+              <div className="rounded-[28px] bg-[#f7f7f8] p-6 text-[#6e6e73]">
+                No requests yet.
+              </div>
+            ) : (
+              requests.map((request) => (
+                <div
+                  key={request.id}
+                  className="rounded-[28px] bg-[#f7f7f8] p-6 ring-1 ring-black/5"
+                >
+                  <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-[#6e6e73]">
+                        {request.athleteName} • {request.school}
+                      </p>
+                      <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em]">
+                        {request.coachName}
+                      </h3>
+                      <p className="mt-2 text-sm text-[#6e6e73]">
+                        {request.coachEmail} • {formatRequestDate(request.createdAt)}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#1d1d1f] ring-1 ring-black/5">
+                        {request.status}
+                      </span>
+                      <button
+                        onClick={() => handleMarkReviewed(request.id)}
+                        className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
+                      >
+                        Mark Reviewed
+                      </button>
+                      <button
+                        onClick={() => handleDeleteRequest(request.id)}
+                        className="rounded-full bg-[#fff1f1] px-4 py-2 text-sm font-medium text-[#b42318]"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
+                    {request.message}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
 
         <section className="mt-8 grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
