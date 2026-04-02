@@ -2,6 +2,12 @@ import { athletes as defaultAthletes } from "../data/athletes";
 
 const ADMIN_ATHLETES_KEY = "recrux-admin-athletes";
 
+export type RecruitingStatus =
+  | "New"
+  | "Watchlist"
+  | "Top Target"
+  | "Contacted";
+
 export type AdminAthleteRecord = {
   id: string;
   fullName: string;
@@ -16,6 +22,8 @@ export type AdminAthleteRecord = {
   bio: string;
   video: string;
   notes: string;
+  status: RecruitingStatus;
+  coachNotes: string;
 };
 
 export function getDefaultAdminAthletes(): AdminAthleteRecord[] {
@@ -33,6 +41,8 @@ export function getDefaultAdminAthletes(): AdminAthleteRecord[] {
     bio: athlete.bio,
     video: athlete.video,
     notes: athlete.notes,
+    status: "New",
+    coachNotes: "",
   }));
 }
 
@@ -47,7 +57,24 @@ export function getStoredAdminAthletes(): AdminAthleteRecord[] {
   }
 
   try {
-    return JSON.parse(stored) as AdminAthleteRecord[];
+    const parsed = JSON.parse(stored) as Partial<AdminAthleteRecord>[];
+    return parsed.map((athlete) => ({
+      id: athlete.id ?? "",
+      fullName: athlete.fullName ?? "",
+      country: athlete.country ?? "",
+      sport: athlete.sport ?? "",
+      gender: athlete.gender ?? "",
+      age: athlete.age ?? 17,
+      gpa: athlete.gpa ?? 3.5,
+      graduationYear: athlete.graduationYear ?? 2026,
+      academicInfo: athlete.academicInfo ?? "",
+      athleticStats: athlete.athleticStats ?? "",
+      bio: athlete.bio ?? "",
+      video: athlete.video ?? "",
+      notes: athlete.notes ?? "",
+      status: (athlete.status as RecruitingStatus) ?? "New",
+      coachNotes: athlete.coachNotes ?? "",
+    }));
   } catch {
     return getDefaultAdminAthletes();
   }

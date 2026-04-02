@@ -8,7 +8,15 @@ import {
   resetAdminAthletes,
   saveAdminAthletes,
   type AdminAthleteRecord,
+  type RecruitingStatus,
 } from "../../lib/admin-storage";
+
+const statuses: RecruitingStatus[] = [
+  "New",
+  "Watchlist",
+  "Top Target",
+  "Contacted",
+];
 
 const emptyForm: AdminAthleteRecord = {
   id: "",
@@ -24,6 +32,8 @@ const emptyForm: AdminAthleteRecord = {
   bio: "",
   video: "",
   notes: "",
+  status: "New",
+  coachNotes: "",
 };
 
 function makeId(name: string) {
@@ -231,11 +241,12 @@ export default function AdminPage() {
             </div>
 
             <div className="overflow-hidden rounded-[28px] border border-black/5">
-              <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_auto] bg-[#f7f7f8] px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#86868b]">
+              <div className="grid grid-cols-[1.3fr_1fr_1fr_1fr_1fr_auto] bg-[#f7f7f8] px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#86868b]">
                 <p>Name</p>
                 <p>Sport</p>
                 <p>Country</p>
                 <p>Year</p>
+                <p>Status</p>
                 <p>Actions</p>
               </div>
 
@@ -243,7 +254,7 @@ export default function AdminPage() {
                 {records.map((athlete) => (
                   <div
                     key={athlete.id}
-                    className="grid grid-cols-[1.4fr_1fr_1fr_1fr_auto] items-center gap-4 px-5 py-4 text-sm text-[#1d1d1f]"
+                    className="grid grid-cols-[1.3fr_1fr_1fr_1fr_1fr_auto] items-center gap-4 px-5 py-4 text-sm text-[#1d1d1f]"
                   >
                     <div>
                       <p className="font-semibold">{athlete.fullName}</p>
@@ -252,6 +263,7 @@ export default function AdminPage() {
                     <p>{athlete.sport}</p>
                     <p>{athlete.country}</p>
                     <p>{athlete.graduationYear}</p>
+                    <p>{athlete.status}</p>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleLoadAthlete(athlete.id)}
@@ -354,18 +366,37 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
-                  Graduation Year
-                </label>
-                <input
-                  type="number"
-                  value={form.graduationYear}
-                  onChange={(event) =>
-                    updateField("graduationYear", Number(event.target.value))
-                  }
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
-                />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                    Graduation Year
+                  </label>
+                  <input
+                    type="number"
+                    value={form.graduationYear}
+                    onChange={(event) =>
+                      updateField("graduationYear", Number(event.target.value))
+                    }
+                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                    Recruiting Status
+                  </label>
+                  <select
+                    value={form.status}
+                    onChange={(event) =>
+                      updateField("status", event.target.value as RecruitingStatus)
+                    }
+                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  >
+                    {statuses.map((status) => (
+                      <option key={status}>{status}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div>
@@ -417,12 +448,24 @@ export default function AdminPage() {
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
-                  Notes
+                  Public Notes
                 </label>
                 <textarea
                   value={form.notes}
                   onChange={(event) => updateField("notes", event.target.value)}
                   rows={3}
+                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                  Coach Notes
+                </label>
+                <textarea
+                  value={form.coachNotes}
+                  onChange={(event) => updateField("coachNotes", event.target.value)}
+                  rows={4}
                   className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
                 />
               </div>
