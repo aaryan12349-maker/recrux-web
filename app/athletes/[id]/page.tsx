@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AppNav from "../../../components/AppNav";
-import PageTransition from "../../../components/PageTransition";
 import { athletes } from "../../../data/athletes";
 import {
   getSavedAthletes,
@@ -52,147 +51,171 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
 
   if (!athlete) {
     return (
-      <PageTransition>
-        <main className="min-h-screen bg-[linear-gradient(to_bottom,#f5f5f4,#fafaf9)] p-6">
-          <div className="mx-auto max-w-6xl">
-            <AppNav active="profile" />
-            <div className="rounded-[28px] bg-white p-8 shadow-sm">
-              <h1 className="text-2xl font-bold text-neutral-900">Athlete not found</h1>
-              <p className="mt-3 text-neutral-600">
-                This athlete profile does not exist.
-              </p>
-            </div>
+      <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+        <div className="mx-auto max-w-7xl">
+          <AppNav active="profile" />
+          <div className="rounded-[32px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            <h1 className="text-3xl font-semibold tracking-[-0.03em]">
+              Athlete not found.
+            </h1>
+            <p className="mt-3 text-lg text-[#6e6e73]">
+              This athlete profile does not exist.
+            </p>
           </div>
-        </main>
-      </PageTransition>
+        </div>
+      </main>
     );
   }
 
   return (
-    <PageTransition>
-      <main className="min-h-screen bg-[linear-gradient(to_bottom,#f5f5f4,#fafaf9)] p-6">
-        <div className="mx-auto max-w-6xl">
-          <AppNav active="profile" />
+    <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+      <div className="mx-auto max-w-7xl">
+        <AppNav active="profile" />
 
-          <Link
-            href="/dashboard"
-            className="mb-6 inline-block rounded-full border border-neutral-300 bg-white px-5 py-2 text-sm font-semibold text-neutral-900 transition-all duration-300 hover:-translate-y-0.5"
-          >
-            Back to Dashboard
-          </Link>
+        <Link
+          href="/dashboard"
+          className="mb-6 inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-medium text-[#1d1d1f] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
+        >
+          Back to Dashboard
+        </Link>
 
-          <section className="rounded-[32px] bg-white p-8 shadow-sm">
-            <div className="grid gap-8 lg:grid-cols-[340px_1fr]">
-              <div>
-                <div className="h-[420px] rounded-[28px] bg-[linear-gradient(135deg,#d4d4d4,#e5e5e5)]" />
-              </div>
-
-              <div>
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="max-w-2xl">
-                    <p className="text-sm font-semibold uppercase tracking-[0.22em] text-neutral-500">
-                      RecruX Athlete Profile
-                    </p>
-
-                    <h1 className="mt-3 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
-                      {athlete.fullName}
-                    </h1>
-
-                    <p className="mt-4 text-lg text-neutral-600">
-                      {athlete.sport} • {athlete.country}
-                    </p>
-                  </div>
-
-                  <span className="rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700">
-                    Class of {athlete.graduationYear}
-                  </span>
+        <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
+          <div className="grid gap-8 xl:grid-cols-[420px_1fr]">
+            <div className="rounded-[36px] bg-[linear-gradient(135deg,#d7d7da,#efeff1)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+              <div className="flex h-[520px] items-end rounded-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.35),rgba(255,255,255,0.05))] p-6">
+                <div className="rounded-[24px] bg-white/70 px-4 py-3 backdrop-blur">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                    Athlete Profile
+                  </p>
+                  <p className="mt-2 text-lg font-semibold">{athlete.sport}</p>
                 </div>
-
-                <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl bg-neutral-50 p-5">
-                    <p className="text-sm text-neutral-500">Gender</p>
-                    <p className="mt-2 text-2xl font-bold text-neutral-900">
-                      {athlete.gender}
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-neutral-50 p-5">
-                    <p className="text-sm text-neutral-500">Age</p>
-                    <p className="mt-2 text-2xl font-bold text-neutral-900">
-                      {athlete.age}
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-neutral-50 p-5">
-                    <p className="text-sm text-neutral-500">GPA</p>
-                    <p className="mt-2 text-2xl font-bold text-neutral-900">
-                      {athlete.gpa}
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-neutral-50 p-5">
-                    <p className="text-sm text-neutral-500">Graduation Year</p>
-                    <p className="mt-2 text-2xl font-bold text-neutral-900">
-                      {athlete.graduationYear}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <button
-                    onClick={handleSaveToggle}
-                    className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
-                  >
-                    {saved ? "Saved Athlete" : "Save Athlete"}
-                  </button>
-
-                  <button className="rounded-full border border-neutral-300 bg-white px-6 py-3 text-sm font-semibold text-neutral-900 transition-all duration-300 hover:-translate-y-0.5">
-                    Request More Info
-                  </button>
-                </div>
-
-                <p className="mt-4 text-sm text-neutral-500">
-                  Coach-facing only. Request flow can be connected to email, CRM, or admin review later.
-                </p>
               </div>
             </div>
 
-            <div className="mt-10 grid gap-6">
-              <div className="rounded-[28px] bg-neutral-50 p-6">
-                <h2 className="text-2xl font-bold text-neutral-900">Academic Info</h2>
-                <p className="mt-3 leading-7 text-neutral-600">{athlete.academicInfo}</p>
+            <div>
+              <div className="flex flex-col gap-8 xl:flex-row xl:items-start xl:justify-between">
+                <div className="max-w-3xl">
+                  <p className="text-sm font-medium text-[#6e6e73]">
+                    RecruX Athlete Profile
+                  </p>
+                  <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
+                    {athlete.fullName}
+                  </h1>
+                  <p className="mt-5 text-xl leading-8 text-[#6e6e73]">
+                    {athlete.sport} • {athlete.country} • {athlete.gender}
+                  </p>
+                </div>
+
+                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                    Graduation Year
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold">
+                    {athlete.graduationYear}
+                  </p>
+                </div>
               </div>
 
-              <div className="rounded-[28px] bg-neutral-50 p-6">
-                <h2 className="text-2xl font-bold text-neutral-900">Athletic Stats</h2>
-                <p className="mt-3 leading-7 text-neutral-600">{athlete.athleticStats}</p>
+              <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                    Age
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold">{athlete.age}</p>
+                </div>
+
+                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                    GPA
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold">{athlete.gpa}</p>
+                </div>
+
+                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                    Gender
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold">{athlete.gender}</p>
+                </div>
+
+                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                    Market
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold">{athlete.country}</p>
+                </div>
               </div>
 
-              <div className="rounded-[28px] bg-neutral-50 p-6">
-                <h2 className="text-2xl font-bold text-neutral-900">Bio</h2>
-                <p className="mt-3 leading-7 text-neutral-600">{athlete.bio}</p>
-              </div>
-
-              <div className="rounded-[28px] bg-neutral-50 p-6">
-                <h2 className="text-2xl font-bold text-neutral-900">Highlight Video</h2>
-                <a
-                  href={athlete.video}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-3 inline-block text-sm font-semibold text-blue-600 underline"
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button
+                  onClick={handleSaveToggle}
+                  className="rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  Watch Highlight Video
-                </a>
+                  {saved ? "Saved Athlete" : "Save Athlete"}
+                </button>
+
+                <button className="rounded-full bg-white px-6 py-3 text-sm font-medium text-[#1d1d1f] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5">
+                  Request More Info
+                </button>
               </div>
 
-              <div className="rounded-[28px] bg-neutral-50 p-6">
-                <h2 className="text-2xl font-bold text-neutral-900">Notes</h2>
-                <p className="mt-3 leading-7 text-neutral-600">{athlete.notes}</p>
-              </div>
+              <p className="mt-4 text-sm text-[#86868b]">
+                Coach-facing only. Athlete communication and CRM workflow can be connected later.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+          <section className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            <p className="text-sm font-medium text-[#6e6e73]">Academics</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+              Academic context
+            </h2>
+            <p className="mt-5 text-[17px] leading-8 text-[#6e6e73]">
+              {athlete.academicInfo}
+            </p>
+          </section>
+
+          <section className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            <p className="text-sm font-medium text-[#6e6e73]">Performance</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+              Athletic stats
+            </h2>
+            <p className="mt-5 text-[17px] leading-8 text-[#6e6e73]">
+              {athlete.athleticStats}
+            </p>
+          </section>
+
+          <section className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            <p className="text-sm font-medium text-[#6e6e73]">Profile</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+              Bio
+            </h2>
+            <p className="mt-5 text-[17px] leading-8 text-[#6e6e73]">
+              {athlete.bio}
+            </p>
+          </section>
+
+          <section className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            <p className="text-sm font-medium text-[#6e6e73]">Media + Notes</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+              Recruiting details
+            </h2>
+            <div className="mt-5 space-y-4 text-[17px] leading-8 text-[#6e6e73]">
+              <p>{athlete.notes}</p>
+              <a
+                href={athlete.video}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Watch Highlight Video
+              </a>
             </div>
           </section>
         </div>
-      </main>
-    </PageTransition>
+      </div>
+    </main>
   );
 }

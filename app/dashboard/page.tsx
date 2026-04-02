@@ -92,71 +92,73 @@ export default function DashboardPage() {
         </section>
 
         <div className="mt-8 grid gap-8 xl:grid-cols-[320px_1fr]">
-          <aside className="rounded-[36px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
-            <div className="mb-6">
-              <p className="text-sm font-medium text-[#6e6e73]">Filters</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
-                Refine the board.
-              </h2>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
-                  Sport
-                </label>
-                <select
-                  value={selectedSport}
-                  onChange={(event) => setSelectedSport(event.target.value)}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none"
-                >
-                  {sports.map((sport) => (
-                    <option key={sport}>{sport}</option>
-                  ))}
-                </select>
+          <aside className="xl:sticky xl:top-28 xl:self-start">
+            <div className="rounded-[36px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+              <div className="mb-6">
+                <p className="text-sm font-medium text-[#6e6e73]">Filters</p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+                  Refine the board.
+                </h2>
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
-                  Gender
-                </label>
-                <select
-                  value={selectedGender}
-                  onChange={(event) => setSelectedGender(event.target.value)}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none"
-                >
-                  {genders.map((gender) => (
-                    <option key={gender}>{gender}</option>
-                  ))}
-                </select>
-              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                    Sport
+                  </label>
+                  <select
+                    value={selectedSport}
+                    onChange={(event) => setSelectedSport(event.target.value)}
+                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none"
+                  >
+                    {sports.map((sport) => (
+                      <option key={sport}>{sport}</option>
+                    ))}
+                  </select>
+                </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
-                  Country
-                </label>
-                <select
-                  value={selectedCountry}
-                  onChange={(event) => setSelectedCountry(event.target.value)}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none"
-                >
-                  {countries.map((country) => (
-                    <option key={country}>{country}</option>
-                  ))}
-                </select>
-              </div>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                    Gender
+                  </label>
+                  <select
+                    value={selectedGender}
+                    onChange={(event) => setSelectedGender(event.target.value)}
+                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none"
+                  >
+                    {genders.map((gender) => (
+                      <option key={gender}>{gender}</option>
+                    ))}
+                  </select>
+                </div>
 
-              <button
-                onClick={() => {
-                  setSearch("");
-                  setSelectedSport("All Sports");
-                  setSelectedGender("All");
-                  setSelectedCountry("All Countries");
-                }}
-                className="mt-2 w-full rounded-[22px] bg-black px-4 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Reset Filters
-              </button>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+                    Country
+                  </label>
+                  <select
+                    value={selectedCountry}
+                    onChange={(event) => setSelectedCountry(event.target.value)}
+                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none"
+                  >
+                    {countries.map((country) => (
+                      <option key={country}>{country}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setSearch("");
+                    setSelectedSport("All Sports");
+                    setSelectedGender("All");
+                    setSelectedCountry("All Countries");
+                  }}
+                  className="mt-2 w-full rounded-[22px] bg-black px-4 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Reset Filters
+                </button>
+              </div>
             </div>
           </aside>
 
@@ -176,6 +178,21 @@ export default function DashboardPage() {
                   {filteredAthletes.length === 1 ? "" : "s"} visible
                 </div>
               </div>
+            </div>
+
+            <div className="mb-6 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium text-[#6e6e73]">
+                  Athlete Board
+                </p>
+                <h2 className="mt-2 text-4xl font-semibold tracking-[-0.03em]">
+                  Curated profiles.
+                </h2>
+              </div>
+              <p className="hidden max-w-md text-right text-sm leading-6 text-[#6e6e73] lg:block">
+                Every profile is presented for evaluation, not conversation. The
+                experience is intentionally coach-first and distraction-free.
+              </p>
             </div>
 
             {filteredAthletes.length === 0 ? (

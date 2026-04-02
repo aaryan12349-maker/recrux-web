@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AppNav from "../../components/AppNav";
-import PageTransition from "../../components/PageTransition";
 import { athletes } from "../../data/athletes";
 import { getSavedAthletes } from "../../lib/storage";
 
@@ -19,89 +18,85 @@ export default function SavedPage() {
   );
 
   return (
-    <PageTransition>
-      <main className="min-h-screen bg-[linear-gradient(to_bottom,#f5f5f4,#fafaf9)] p-6">
-        <div className="mx-auto max-w-7xl">
-          <AppNav active="saved" />
+    <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+      <div className="mx-auto max-w-7xl">
+        <AppNav active="saved" />
 
-          <section className="mb-6 rounded-[32px] bg-black px-8 py-10 text-white shadow-sm">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-neutral-400">
-              Saved Board
-            </p>
-
-            <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-3xl">
-                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                  Keep your shortlist organized.
-                </h1>
-                <p className="mt-4 text-base leading-7 text-neutral-300 sm:text-lg">
-                  Save athletes you want to revisit, compare, or discuss with your
-                  staff as you narrow your recruiting board.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5">
-                <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">
-                  Saved Athletes
-                </p>
-                <p className="mt-2 text-3xl font-bold">{savedAthletes.length}</p>
-              </div>
-            </div>
-          </section>
-
-          {savedAthletes.length === 0 ? (
-            <div className="rounded-[28px] bg-white p-10 shadow-sm">
-              <h2 className="text-2xl font-bold text-neutral-900">
-                No saved athletes yet
-              </h2>
-              <p className="mt-3 text-neutral-600">
-                Go to an athlete profile and click <span className="font-semibold">Save Athlete</span>.
+        <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
+          <div className="flex flex-col gap-10 xl:flex-row xl:items-start xl:justify-between">
+            <div className="max-w-4xl">
+              <p className="text-sm font-medium text-[#6e6e73]">Saved Board</p>
+              <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-7xl">
+                Keep your shortlist beautifully organized.
+              </h1>
+              <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
+                Save athletes worth revisiting, compare profiles more calmly,
+                and build a cleaner recruiting board for your staff.
               </p>
+            </div>
 
+            <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 xl:min-w-[180px]">
+              <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                Saved
+              </p>
+              <p className="mt-2 text-3xl font-semibold">{savedAthletes.length}</p>
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-8">
+          {savedAthletes.length === 0 ? (
+            <section className="rounded-[36px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+              <h2 className="text-3xl font-semibold tracking-[-0.03em]">
+                No saved athletes yet.
+              </h2>
+              <p className="mt-3 max-w-2xl text-lg leading-8 text-[#6e6e73]">
+                Browse profiles from the dashboard and tap Save Athlete to build your shortlist.
+              </p>
               <Link
                 href="/dashboard"
-                className="mt-6 inline-block rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
+                className="mt-8 inline-flex rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
               >
                 Browse Athletes
               </Link>
-            </div>
+            </section>
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 2xl:grid-cols-3">
               {savedAthletes.map((athlete) => (
                 <article
                   key={athlete.id}
-                  className="rounded-[28px] bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                  className="group rounded-[32px] bg-white p-5 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_18px_44px_rgba(0,0,0,0.08)]"
                 >
-                  <div className="mb-4 h-44 rounded-[24px] bg-[linear-gradient(135deg,#d4d4d4,#e5e5e5)]" />
+                  <div className="mb-5 h-52 rounded-[26px] bg-[linear-gradient(135deg,#d7d7da,#efeff1)] transition-transform duration-500 group-hover:scale-[1.015]" />
 
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-xl font-bold text-neutral-900">
+                      <h3 className="text-2xl font-semibold tracking-[-0.03em]">
                         {athlete.fullName}
                       </h3>
-                      <p className="mt-2 text-sm text-neutral-600">
+                      <p className="mt-2 text-sm text-[#6e6e73]">
                         {athlete.country} • {athlete.gender}
                       </p>
                     </div>
 
-                    <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold text-neutral-700">
+                    <span className="rounded-full bg-[#f5f5f7] px-3 py-1 text-xs font-medium text-[#6e6e73]">
                       {athlete.sport}
                     </span>
                   </div>
 
-                  <div className="mt-4 grid gap-2 rounded-2xl bg-neutral-50 p-4 text-sm text-neutral-600">
+                  <div className="mt-5 grid gap-2 rounded-[24px] bg-[#f7f7f8] p-4 text-sm text-[#6e6e73]">
                     <p>Age: {athlete.age}</p>
                     <p>Class of {athlete.graduationYear}</p>
                     <p>GPA: {athlete.gpa}</p>
                   </div>
 
-                  <p className="mt-4 text-sm leading-6 text-neutral-600">
+                  <p className="mt-5 text-[15px] leading-7 text-[#6e6e73]">
                     {athlete.bio}
                   </p>
 
                   <Link
                     href={`/athletes/${athlete.id}`}
-                    className="mt-5 inline-block rounded-full bg-black px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
+                    className="mt-6 inline-flex rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
                   >
                     View Profile
                   </Link>
@@ -110,7 +105,7 @@ export default function SavedPage() {
             </div>
           )}
         </div>
-      </main>
-    </PageTransition>
+      </div>
+    </main>
   );
 }
