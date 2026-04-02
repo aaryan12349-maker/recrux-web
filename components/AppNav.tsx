@@ -11,10 +11,11 @@ import {
 } from "../lib/storage";
 
 type AppNavProps = {
-  active?: "dashboard" | "saved" | "profile" | "pricing";
+  active?: "dashboard" | "saved" | "profile" | "pricing" | "admin";
   showPricing?: boolean;
   showAppLinks?: boolean;
   showAuthAction?: boolean;
+  showAdminLink?: boolean;
 };
 
 function navClass(isActive: boolean) {
@@ -31,6 +32,7 @@ export default function AppNav({
   showPricing = false,
   showAppLinks = false,
   showAuthAction = false,
+  showAdminLink = false,
 }: AppNavProps) {
   const router = useRouter();
   const [visible, setVisible] = useState(true);
@@ -119,6 +121,12 @@ export default function AppNav({
           {showPricing ? (
             <Link href="/pricing" className={navClass(active === "pricing")}>
               Pricing
+            </Link>
+          ) : null}
+
+          {showAdminLink ? (
+            <Link href="/admin" className={navClass(active === "admin")}>
+              Admin
             </Link>
           ) : null}
 
