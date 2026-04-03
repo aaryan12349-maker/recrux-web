@@ -28,6 +28,22 @@ function makeRequestId() {
   return `request-${Date.now()}`;
 }
 
+function statusClasses(status: AdminAthleteRecord["status"]) {
+  if (status === "Top Target") {
+    return "bg-[#111111] text-white";
+  }
+
+  if (status === "Watchlist") {
+    return "bg-[#eef2ff] text-[#3730a3]";
+  }
+
+  if (status === "Contacted") {
+    return "bg-[#ecfdf3] text-[#027a48]";
+  }
+
+  return "bg-[#f4f4f5] text-[#52525b]";
+}
+
 export default function AthleteProfilePage({ params }: AthletePageProps) {
   const router = useRouter();
   const [allowed, setAllowed] = useState(false);
@@ -123,13 +139,13 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
 
   if (!allowed) {
     return (
-      <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+      <main className="min-h-screen bg-[#f5f5f7] px-4 pb-16 pt-4 text-[#1d1d1f] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <div className="rounded-[36px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <div className="rounded-[28px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-10">
             <h1 className="text-3xl font-semibold tracking-[-0.03em]">
               Checking access...
             </h1>
-            <p className="mt-3 text-lg text-[#6e6e73]">
+            <p className="mt-3 text-base text-[#6e6e73] sm:text-lg">
               Redirecting you to the right place.
             </p>
           </div>
@@ -140,14 +156,14 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
 
   if (!athlete) {
     return (
-      <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+      <main className="min-h-screen bg-[#f5f5f7] px-4 pb-16 pt-4 text-[#1d1d1f] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <AppNav active="profile" showAppLinks showAuthAction />
-          <div className="rounded-[32px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <div className="rounded-[28px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[32px] sm:p-10">
             <h1 className="text-3xl font-semibold tracking-[-0.03em]">
               Athlete not found.
             </h1>
-            <p className="mt-3 text-lg text-[#6e6e73]">
+            <p className="mt-3 text-base text-[#6e6e73] sm:text-lg">
               This athlete profile does not exist.
             </p>
           </div>
@@ -157,7 +173,7 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+    <main className="min-h-screen bg-[#f5f5f7] px-4 pb-16 pt-4 text-[#1d1d1f] sm:px-6 lg:px-8 lg:pb-20">
       <div className="mx-auto max-w-7xl">
         <AppNav active="profile" showAppLinks showAuthAction />
 
@@ -168,9 +184,9 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
           Back to Dashboard
         </Link>
 
-        <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
+        <section className="rounded-[32px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-6 py-8 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:rounded-[42px] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
           <div className="grid gap-8 xl:grid-cols-[420px_1fr]">
-            <div className="rounded-[36px] bg-white p-5 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+            <div className="rounded-[30px] bg-white p-4 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-5">
               <MockAthletePortrait
                 name={athlete.fullName}
                 sport={athlete.sport}
@@ -180,56 +196,83 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
             </div>
 
             <div>
-              <div className="flex flex-col gap-8 xl:flex-row xl:items-start xl:justify-between">
+              <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
                 <div className="max-w-3xl">
                   <p className="text-sm font-medium text-[#6e6e73]">
                     RecruX Athlete Profile
                   </p>
-                  <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
-                    {athlete.fullName}
-                  </h1>
-                  <p className="mt-5 text-xl leading-8 text-[#6e6e73]">
+
+                  <div className="mt-3 flex flex-wrap items-center gap-3">
+                    <h1 className="text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+                      {athlete.fullName}
+                    </h1>
+                    <span
+                      className={`rounded-full px-4 py-2 text-sm font-semibold ${statusClasses(
+                        athlete.status
+                      )}`}
+                    >
+                      {athlete.status}
+                    </span>
+                  </div>
+
+                  <p className="mt-5 text-lg leading-8 text-[#6e6e73] sm:text-xl">
                     {athlete.sport} • {athlete.country} • {athlete.gender}
                   </p>
+
+                  {athlete.coachNotes ? (
+                    <div className="mt-6 rounded-[24px] bg-[#fff8e8] px-5 py-4 text-sm text-[#7a5d00] ring-1 ring-[#7a5d00]/10">
+                      <p className="font-semibold">Coach Notes</p>
+                      <p className="mt-2 leading-7">{athlete.coachNotes}</p>
+                    </div>
+                  ) : null}
                 </div>
 
-                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
-                    Graduation Year
-                  </p>
-                  <p className="mt-2 text-3xl font-semibold">
-                    {athlete.graduationYear}
-                  </p>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-1">
+                  <div className="rounded-[24px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px]">
+                    <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                      Graduation Year
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold">
+                      {athlete.graduationYear}
+                    </p>
+                  </div>
+
+                  <div className="rounded-[24px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px]">
+                    <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                      GPA
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold">{athlete.gpa}</p>
+                  </div>
                 </div>
               </div>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                <div className="rounded-[24px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px]">
                   <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
                     Age
                   </p>
                   <p className="mt-2 text-3xl font-semibold">{athlete.age}</p>
                 </div>
 
-                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                <div className="rounded-[24px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px]">
                   <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
-                    GPA
+                    Sport
                   </p>
-                  <p className="mt-2 text-3xl font-semibold">{athlete.gpa}</p>
+                  <p className="mt-2 text-2xl font-semibold">{athlete.sport}</p>
                 </div>
 
-                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                <div className="rounded-[24px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px]">
                   <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
                     Gender
                   </p>
-                  <p className="mt-2 text-3xl font-semibold">{athlete.gender}</p>
+                  <p className="mt-2 text-2xl font-semibold">{athlete.gender}</p>
                 </div>
 
-                <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
+                <div className="rounded-[24px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px]">
                   <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
                     Market
                   </p>
-                  <p className="mt-2 text-3xl font-semibold">{athlete.country}</p>
+                  <p className="mt-2 text-2xl font-semibold">{athlete.country}</p>
                 </div>
               </div>
 
@@ -265,10 +308,10 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
               {showRequestForm ? (
                 <form
                   onSubmit={handleRequestSubmit}
-                  className="mt-6 rounded-[32px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5"
+                  className="mt-6 rounded-[28px] bg-white p-5 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[32px] sm:p-6"
                 >
                   <p className="text-sm font-medium text-[#6e6e73]">Info Request</p>
-                  <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+                  <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
                     Request details for {athlete.fullName}
                   </h2>
 
@@ -280,7 +323,7 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
                       <input
                         value={requestCoachName}
                         onChange={(event) => setRequestCoachName(event.target.value)}
-                        className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                        className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                       />
                     </div>
 
@@ -292,7 +335,7 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
                         type="email"
                         value={requestCoachEmail}
                         onChange={(event) => setRequestCoachEmail(event.target.value)}
-                        className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                        className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                       />
                     </div>
                   </div>
@@ -304,7 +347,7 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
                     <input
                       value={requestSchool}
                       onChange={(event) => setRequestSchool(event.target.value)}
-                      className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                      className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                     />
                   </div>
 
@@ -316,7 +359,7 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
                       value={requestMessage}
                       onChange={(event) => setRequestMessage(event.target.value)}
                       rows={4}
-                      className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                      className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                     />
                   </div>
 
@@ -343,42 +386,42 @@ export default function AthleteProfilePage({ params }: AthletePageProps) {
         </section>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
-          <section className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <section className="rounded-[30px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-8">
             <p className="text-sm font-medium text-[#6e6e73]">Academics</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
               Academic context
             </h2>
-            <p className="mt-5 text-[17px] leading-8 text-[#6e6e73]">
+            <p className="mt-5 text-[16px] leading-8 text-[#6e6e73] sm:text-[17px]">
               {athlete.academicInfo}
             </p>
           </section>
 
-          <section className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <section className="rounded-[30px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-8">
             <p className="text-sm font-medium text-[#6e6e73]">Performance</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
               Athletic stats
             </h2>
-            <p className="mt-5 text-[17px] leading-8 text-[#6e6e73]">
+            <p className="mt-5 text-[16px] leading-8 text-[#6e6e73] sm:text-[17px]">
               {athlete.athleticStats}
             </p>
           </section>
 
-          <section className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <section className="rounded-[30px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-8">
             <p className="text-sm font-medium text-[#6e6e73]">Profile</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
               Bio
             </h2>
-            <p className="mt-5 text-[17px] leading-8 text-[#6e6e73]">
+            <p className="mt-5 text-[16px] leading-8 text-[#6e6e73] sm:text-[17px]">
               {athlete.bio}
             </p>
           </section>
 
-          <section className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <section className="rounded-[30px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-8">
             <p className="text-sm font-medium text-[#6e6e73]">Media + Notes</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
               Recruiting details
             </h2>
-            <div className="mt-5 space-y-4 text-[17px] leading-8 text-[#6e6e73]">
+            <div className="mt-5 space-y-4 text-[16px] leading-8 text-[#6e6e73] sm:text-[17px]">
               <p>{athlete.notes}</p>
               <a
                 href={athlete.video}

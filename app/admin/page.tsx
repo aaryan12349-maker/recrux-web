@@ -57,6 +57,30 @@ function formatRequestDate(value: string) {
   return date.toLocaleDateString();
 }
 
+function requestStatusClasses(status: InfoRequestRecord["status"]) {
+  if (status === "Reviewed") {
+    return "bg-[#ecfdf3] text-[#027a48]";
+  }
+
+  return "bg-[#fff8e8] text-[#7a5d00]";
+}
+
+function athleteStatusClasses(status: RecruitingStatus) {
+  if (status === "Top Target") {
+    return "bg-[#111111] text-white";
+  }
+
+  if (status === "Watchlist") {
+    return "bg-[#eef2ff] text-[#3730a3]";
+  }
+
+  if (status === "Contacted") {
+    return "bg-[#ecfdf3] text-[#027a48]";
+  }
+
+  return "bg-[#f4f4f5] text-[#52525b]";
+}
+
 export default function AdminPage() {
   const router = useRouter();
   const [records, setRecords] = useState<AdminAthleteRecord[]>([]);
@@ -200,10 +224,10 @@ export default function AdminPage() {
 
   if (!loaded) {
     return (
-      <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+      <main className="min-h-screen bg-[#f5f5f7] px-4 pb-16 pt-4 text-[#1d1d1f] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <AppNav active="admin" showAdminLink showAdminAction />
-          <div className="rounded-[36px] bg-white p-10 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <div className="rounded-[28px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-10">
             Checking admin access...
           </div>
         </div>
@@ -212,86 +236,100 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+    <main className="min-h-screen bg-[#f5f5f7] px-4 pb-16 pt-4 text-[#1d1d1f] sm:px-6 lg:px-8 lg:pb-20">
       <div className="mx-auto max-w-7xl">
         <AppNav active="admin" showAdminLink showAdminAction />
 
-        <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
-          <div className="flex flex-col gap-10 xl:flex-row xl:items-start xl:justify-between">
+        <section className="rounded-[32px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-6 py-8 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:rounded-[42px] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
+          <div className="flex flex-col gap-8 xl:flex-row xl:items-start xl:justify-between">
             <div className="max-w-4xl">
               <p className="text-sm font-medium text-[#6e6e73]">Admin</p>
-              <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-7xl">
+              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl xl:text-7xl">
                 Manage athlete data with clarity.
               </h1>
-              <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
+              <p className="mt-5 max-w-3xl text-base leading-8 text-[#6e6e73] sm:text-lg lg:text-xl lg:leading-9">
                 This is the internal control layer for RecruX. Changes made here
-                now persist in your browser and power the coach-facing experience.
+                persist in your browser and power the coach-facing experience.
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 xl:min-w-[390px]">
-              <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 xl:min-w-[390px]">
+              <div className="rounded-[24px] bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px] sm:p-5">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b] sm:text-xs">
                   Athletes
                 </p>
-                <p className="mt-2 text-3xl font-semibold">{records.length}</p>
+                <p className="mt-2 text-2xl font-semibold sm:text-3xl">{records.length}</p>
               </div>
 
-              <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+              <div className="rounded-[24px] bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px] sm:p-5">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b] sm:text-xs">
                   Requests
                 </p>
-                <p className="mt-2 text-3xl font-semibold">{requests.length}</p>
+                <p className="mt-2 text-2xl font-semibold sm:text-3xl">{requests.length}</p>
               </div>
 
-              <div className="rounded-[28px] bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+              <div className="rounded-[24px] bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px] sm:p-5">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b] sm:text-xs">
                   Storage
                 </p>
-                <p className="mt-2 text-3xl font-semibold">Saved</p>
+                <p className="mt-2 text-2xl font-semibold sm:text-3xl">Saved</p>
               </div>
             </div>
           </div>
         </section>
 
-        <div className="mt-8 rounded-[28px] bg-[#111111] px-6 py-4 text-sm text-white shadow-[0_12px_36px_rgba(0,0,0,0.12)]">
+        <div className="mt-8 rounded-[24px] bg-[#111111] px-5 py-4 text-sm text-white shadow-[0_12px_36px_rgba(0,0,0,0.12)] sm:rounded-[28px] sm:px-6">
           {message}
         </div>
 
-        <section className="mt-8 rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
-          <p className="text-sm font-medium text-[#6e6e73]">Coach Requests</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
-            Request more info queue
-          </h2>
+        <section className="mt-8 rounded-[30px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-8">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-sm font-medium text-[#6e6e73]">Coach Requests</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
+                Request more info queue
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-6 text-[#6e6e73] lg:text-right">
+              Review incoming coach requests, keep the queue organized, and track which ones have already been handled.
+            </p>
+          </div>
 
           <div className="mt-6 space-y-4">
             {requests.length === 0 ? (
-              <div className="rounded-[28px] bg-[#f7f7f8] p-6 text-[#6e6e73]">
+              <div className="rounded-[24px] bg-[#f7f7f8] p-6 text-[#6e6e73] sm:rounded-[28px]">
                 No requests yet.
               </div>
             ) : (
               requests.map((request) => (
                 <div
                   key={request.id}
-                  className="rounded-[28px] bg-[#f7f7f8] p-6 ring-1 ring-black/5"
+                  className="rounded-[24px] bg-[#f7f7f8] p-5 ring-1 ring-black/5 sm:rounded-[28px] sm:p-6"
                 >
                   <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-[#6e6e73]">
-                        {request.athleteName} • {request.school}
-                      </p>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-sm font-medium text-[#6e6e73]">
+                          {request.athleteName}
+                        </p>
+                        <span
+                          className={`rounded-full px-3 py-1 text-[11px] font-semibold ${requestStatusClasses(
+                            request.status
+                          )}`}
+                        >
+                          {request.status}
+                        </span>
+                      </div>
+
                       <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em]">
                         {request.coachName}
                       </h3>
-                      <p className="mt-2 text-sm text-[#6e6e73]">
-                        {request.coachEmail} • {formatRequestDate(request.createdAt)}
+                      <p className="mt-2 text-sm leading-6 text-[#6e6e73]">
+                        {request.coachEmail} • {request.school} • {formatRequestDate(request.createdAt)}
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#1d1d1f] ring-1 ring-black/5">
-                        {request.status}
-                      </span>
+                    <div className="flex flex-wrap gap-2">
                       <button
                         onClick={() => handleMarkReviewed(request.id)}
                         className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
@@ -307,9 +345,9 @@ export default function AdminPage() {
                     </div>
                   </div>
 
-                  <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
+                  <div className="mt-4 rounded-[20px] bg-white px-4 py-4 text-[15px] leading-7 text-[#6e6e73] sm:rounded-[22px]">
                     {request.message}
-                  </p>
+                  </div>
                 </div>
               ))
             )}
@@ -317,8 +355,8 @@ export default function AdminPage() {
         </section>
 
         <section className="mt-8 grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div className="rounded-[30px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-8">
+            <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <p className="text-sm font-medium text-[#6e6e73]">Athlete Records</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
@@ -326,7 +364,7 @@ export default function AdminPage() {
                 </h2>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 <button
                   onClick={handleResetForm}
                   className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
@@ -342,51 +380,72 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-[28px] border border-black/5">
-              <div className="grid grid-cols-[1.3fr_1fr_1fr_1fr_1fr_auto] bg-[#f7f7f8] px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#86868b]">
-                <p>Name</p>
-                <p>Sport</p>
-                <p>Country</p>
-                <p>Year</p>
-                <p>Status</p>
-                <p>Actions</p>
-              </div>
+            <div className="space-y-4">
+              {records.map((athlete) => (
+                <div
+                  key={athlete.id}
+                  className="rounded-[24px] bg-[#f7f7f8] p-5 ring-1 ring-black/5 sm:rounded-[28px]"
+                >
+                  <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-xl font-semibold tracking-[-0.03em]">
+                          {athlete.fullName}
+                        </p>
+                        <span
+                          className={`rounded-full px-3 py-1 text-[11px] font-semibold ${athleteStatusClasses(
+                            athlete.status
+                          )}`}
+                        >
+                          {athlete.status}
+                        </span>
+                      </div>
 
-              <div className="divide-y divide-black/5">
-                {records.map((athlete) => (
-                  <div
-                    key={athlete.id}
-                    className="grid grid-cols-[1.3fr_1fr_1fr_1fr_1fr_auto] items-center gap-4 px-5 py-4 text-sm text-[#1d1d1f]"
-                  >
-                    <div>
-                      <p className="font-semibold">{athlete.fullName}</p>
-                      <p className="mt-1 text-xs text-[#6e6e73]">{athlete.gender}</p>
+                      <p className="mt-2 text-sm text-[#6e6e73]">
+                        {athlete.sport} • {athlete.country} • {athlete.gender}
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap gap-2 text-sm text-[#6e6e73]">
+                        <span className="rounded-full bg-white px-3 py-1 ring-1 ring-black/5">
+                          Age {athlete.age}
+                        </span>
+                        <span className="rounded-full bg-white px-3 py-1 ring-1 ring-black/5">
+                          GPA {athlete.gpa}
+                        </span>
+                        <span className="rounded-full bg-white px-3 py-1 ring-1 ring-black/5">
+                          {athlete.graduationYear}
+                        </span>
+                      </div>
                     </div>
-                    <p>{athlete.sport}</p>
-                    <p>{athlete.country}</p>
-                    <p>{athlete.graduationYear}</p>
-                    <p>{athlete.status}</p>
-                    <div className="flex gap-2">
+
+                    <div className="flex flex-wrap gap-2">
                       <button
                         onClick={() => handleLoadAthlete(athlete.id)}
-                        className="rounded-full bg-[#f5f5f7] px-3 py-1.5 text-xs font-medium text-[#1d1d1f]"
+                        className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#1d1d1f] ring-1 ring-black/5"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDeleteAthlete(athlete.id)}
-                        className="rounded-full bg-[#fff1f1] px-3 py-1.5 text-xs font-medium text-[#b42318]"
+                        className="rounded-full bg-[#fff1f1] px-4 py-2 text-sm font-medium text-[#b42318]"
                       >
                         Delete
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  {athlete.coachNotes ? (
+                    <div className="mt-4 rounded-[20px] bg-[#fff8e8] px-4 py-3 text-sm text-[#7a5d00] ring-1 ring-[#7a5d00]/10">
+                      <p className="font-medium">Coach Notes</p>
+                      <p className="mt-1 line-clamp-2">{athlete.coachNotes}</p>
+                    </div>
+                  ) : null}
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="rounded-[36px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+          <div className="rounded-[30px] bg-white p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-8">
             <p className="text-sm font-medium text-[#6e6e73]">
               {selectedAthlete ? "Edit Athlete" : "Add Athlete"}
             </p>
@@ -402,7 +461,7 @@ export default function AdminPage() {
                 <input
                   value={form.fullName}
                   onChange={(event) => updateField("fullName", event.target.value)}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                 />
               </div>
 
@@ -414,7 +473,7 @@ export default function AdminPage() {
                   <input
                     value={form.country}
                     onChange={(event) => updateField("country", event.target.value)}
-                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                   />
                 </div>
 
@@ -425,7 +484,7 @@ export default function AdminPage() {
                   <input
                     value={form.sport}
                     onChange={(event) => updateField("sport", event.target.value)}
-                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                   />
                 </div>
               </div>
@@ -438,7 +497,7 @@ export default function AdminPage() {
                   <input
                     value={form.gender}
                     onChange={(event) => updateField("gender", event.target.value)}
-                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                   />
                 </div>
 
@@ -450,7 +509,7 @@ export default function AdminPage() {
                     type="number"
                     value={form.age}
                     onChange={(event) => updateField("age", Number(event.target.value))}
-                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                   />
                 </div>
 
@@ -463,7 +522,7 @@ export default function AdminPage() {
                     step="0.1"
                     value={form.gpa}
                     onChange={(event) => updateField("gpa", Number(event.target.value))}
-                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                   />
                 </div>
               </div>
@@ -479,7 +538,7 @@ export default function AdminPage() {
                     onChange={(event) =>
                       updateField("graduationYear", Number(event.target.value))
                     }
-                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                   />
                 </div>
 
@@ -492,7 +551,7 @@ export default function AdminPage() {
                     onChange={(event) =>
                       updateField("status", event.target.value as RecruitingStatus)
                     }
-                    className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                   >
                     {statuses.map((status) => (
                       <option key={status}>{status}</option>
@@ -509,7 +568,7 @@ export default function AdminPage() {
                   value={form.academicInfo}
                   onChange={(event) => updateField("academicInfo", event.target.value)}
                   rows={3}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                 />
               </div>
 
@@ -521,7 +580,7 @@ export default function AdminPage() {
                   value={form.athleticStats}
                   onChange={(event) => updateField("athleticStats", event.target.value)}
                   rows={3}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                 />
               </div>
 
@@ -533,7 +592,7 @@ export default function AdminPage() {
                   value={form.bio}
                   onChange={(event) => updateField("bio", event.target.value)}
                   rows={3}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                 />
               </div>
 
@@ -544,7 +603,7 @@ export default function AdminPage() {
                 <input
                   value={form.video}
                   onChange={(event) => updateField("video", event.target.value)}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                 />
               </div>
 
@@ -556,7 +615,7 @@ export default function AdminPage() {
                   value={form.notes}
                   onChange={(event) => updateField("notes", event.target.value)}
                   rows={3}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                 />
               </div>
 
@@ -568,7 +627,7 @@ export default function AdminPage() {
                   value={form.coachNotes}
                   onChange={(event) => updateField("coachNotes", event.target.value)}
                   rows={4}
-                  className="w-full rounded-[22px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none"
+                  className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 outline-none sm:rounded-[22px]"
                 />
               </div>
 
