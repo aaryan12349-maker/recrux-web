@@ -1,192 +1,179 @@
 import Link from "next/link";
+import AppNav from "../components/AppNav";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f]">
-      <section className="mx-auto max-w-7xl px-6 pb-24 pt-8">
-        <div className="mb-10 flex items-center justify-between rounded-full bg-white/70 px-4 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 backdrop-blur-xl">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-xs font-semibold text-white">
-              RX
-            </div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-neutral-400">
-              RecruX
-            </p>
-          </div>
+    <main className="min-h-screen bg-[#f5f5f7] px-4 pb-16 pt-4 text-[#1d1d1f] sm:px-6 lg:px-8 lg:pb-20">
+      <div className="mx-auto max-w-7xl">
+        <AppNav showPricing showAuthAction />
 
-          <div className="flex items-center gap-2">
-            <Link
-              href="/pricing"
-              className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-neutral-800 ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/login"
-              className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Coach Login
-            </Link>
-          </div>
-        </div>
+        <section className="rounded-[32px] bg-[linear-gradient(135deg,#ffffff_0%,#f7f7f8_55%,#ececef_100%)] px-6 py-8 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:rounded-[42px] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
+          <div className="grid gap-8 xl:grid-cols-[1.1fr_0.9fr] xl:items-end">
+            <div>
+              <p className="text-sm font-medium text-[#6e6e73]">
+                Coach-only recruiting infrastructure
+              </p>
+              <h1 className="mt-3 max-w-5xl text-4xl font-semibold tracking-[-0.06em] sm:text-5xl lg:text-6xl xl:text-7xl">
+                Discover international student-athletes with the calm clarity of a premium product.
+              </h1>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-[#6e6e73] sm:text-lg lg:text-xl lg:leading-9">
+                RecruX helps college coaches browse, filter, save, and evaluate
+                athlete profiles in one focused recruiting workspace built for
+                serious decision-making.
+              </p>
 
-        <div className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
-          <div className="rounded-[40px] bg-white px-8 py-10 shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:px-12 sm:py-14">
-            <p className="text-sm font-semibold text-[#6e6e73]">
-              Coach-only recruiting infrastructure
-            </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="/pricing"
+                  className="rounded-full bg-black px-6 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  View Pricing
+                </Link>
 
-            <h1 className="mt-4 max-w-5xl text-5xl font-semibold tracking-[-0.04em] sm:text-7xl">
-              Discover international student-athletes with the calm clarity of a premium product.
-            </h1>
-
-            <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
-              RecruX helps college coaches browse, filter, and save athlete profiles from Kenya and across Africa in a focused, private recruiting workflow.
-            </p>
-
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                href="/pricing"
-                className="rounded-full bg-black px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Start With Pricing
-              </Link>
-              <Link
-                href="/dashboard"
-                className="rounded-full bg-[#f5f5f7] px-7 py-3.5 text-sm font-medium text-[#1d1d1f] transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Preview Athlete Board
-              </Link>
-            </div>
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl bg-neutral-50 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                  Access
-                </p>
-                <p className="mt-3 text-sm leading-6 text-neutral-700">
-                  Built only for coaches, not for athlete messaging or public browsing.
-                </p>
+                <Link
+                  href="/login"
+                  className="rounded-full bg-white px-6 py-3.5 text-sm font-medium text-[#1d1d1f] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Coach Login
+                </Link>
               </div>
 
-              <div className="rounded-2xl bg-neutral-50 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                  Focus
-                </p>
-                <p className="mt-3 text-sm leading-6 text-neutral-700">
-                  Searchable profiles with academics, athletic performance, and recruiting notes.
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-neutral-50 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                  Growth
-                </p>
-                <p className="mt-3 text-sm leading-6 text-neutral-700">
-                  Launching with Kenya first, with room to expand across Africa.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid gap-6">
-            <div className="rounded-[36px] bg-[linear-gradient(180deg,#101010,#1c1c1f)] p-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.12)]">
-              <p className="text-sm font-medium text-white/60">Platform Snapshot</p>
-              <div className="mt-8 grid gap-4">
-                <div className="rounded-[28px] bg-white/6 p-5 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-[24px] bg-white p-5 ring-1 ring-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b]">
                     Athlete Profiles
                   </p>
-                  <p className="mt-2 text-4xl font-semibold">12</p>
+                  <p className="mt-2 text-3xl font-semibold">12</p>
                 </div>
-                <div className="rounded-[28px] bg-white/6 p-5 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">
+
+                <div className="rounded-[24px] bg-white p-5 ring-1 ring-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b]">
                     Core Sports
                   </p>
-                  <p className="mt-2 text-4xl font-semibold">5</p>
+                  <p className="mt-2 text-3xl font-semibold">5</p>
                 </div>
-                <div className="rounded-[28px] bg-white/6 p-5 ring-1 ring-white/10">
-                  <p className="text-xs uppercase tracking-[0.18em] text-white/45">
+
+                <div className="rounded-[24px] bg-white p-5 ring-1 ring-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b]">
                     User Journey
                   </p>
-                  <p className="mt-3 text-sm leading-7 text-neutral-300">
+                  <p className="mt-2 text-sm leading-6 text-[#6e6e73]">
                     Login → browse athletes → filter → open profile → save athlete
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-[36px] bg-[linear-gradient(135deg,#ebe7df,#f8f7f3)] p-8 shadow-[0_12px_40px_rgba(0,0,0,0.05)]">
-              <p className="text-sm font-medium text-[#6e6e73]">Monetization Ready</p>
-              <div className="mt-6 space-y-4 text-[15px] leading-7 text-[#3a3a3c]">
-                <p>Subscription plans can be layered in cleanly.</p>
-                <p>Coach accounts can later unlock access based on billing status.</p>
-                <p>Stripe checkout and recurring billing can be connected when you’re ready.</p>
+            <div className="grid gap-4">
+              <div className="rounded-[30px] bg-[#111111] p-6 text-white shadow-[0_18px_50px_rgba(0,0,0,0.12)]">
+                <p className="text-sm font-medium text-white/60">
+                  Why coaches use it
+                </p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">
+                  A recruiting workspace built to reduce friction, not create it.
+                </h2>
+                <div className="mt-6 space-y-3">
+                  <div className="rounded-[22px] bg-white/6 px-4 py-3 ring-1 ring-white/10">
+                    Coach-only athlete database
+                  </div>
+                  <div className="rounded-[22px] bg-white/6 px-4 py-3 ring-1 ring-white/10">
+                    Premium profile review flow
+                  </div>
+                  <div className="rounded-[22px] bg-white/6 px-4 py-3 ring-1 ring-white/10">
+                    Saved board and internal notes
+                  </div>
+                  <div className="rounded-[22px] bg-white/6 px-4 py-3 ring-1 ring-white/10">
+                    Request-more-info workflow built in
+                  </div>
+                </div>
               </div>
+
+              <div className="rounded-[30px] bg-white p-6 ring-1 ring-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
+                <p className="text-sm font-medium text-[#6e6e73]">
+                  Trust Layer
+                </p>
+                <h3 className="mt-3 text-2xl font-semibold tracking-[-0.03em]">
+                  Private, focused, coach-first.
+                </h3>
+                <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
+                  RecruX is designed as a private evaluation environment where
+                  coaches can review athlete profiles, organize targets, and
+                  manage recruiting signals without the clutter of a public-facing
+                  marketplace.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-8 grid gap-6 lg:grid-cols-3">
+          <div className="rounded-[30px] bg-white p-6 ring-1 ring-black/5 shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
+            <p className="text-sm font-medium text-[#6e6e73]">Discover</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">
+              Search the board with precision.
+            </h2>
+            <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
+              Filter by sport, gender, and country to surface athletes that match
+              your recruiting priorities quickly.
+            </p>
+          </div>
+
+          <div className="rounded-[30px] bg-white p-6 ring-1 ring-black/5 shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
+            <p className="text-sm font-medium text-[#6e6e73]">Evaluate</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">
+              Review richer athlete profiles.
+            </h2>
+            <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
+              See academic context, athletic stats, highlight links, status,
+              coach notes, and recruiting details in one clean view.
+            </p>
+          </div>
+
+          <div className="rounded-[30px] bg-white p-6 ring-1 ring-black/5 shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
+            <p className="text-sm font-medium text-[#6e6e73]">Organize</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">
+              Keep your shortlist moving.
+            </h2>
+            <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
+              Save athletes, track recruiting statuses, and submit information
+              requests without leaving the platform.
+            </p>
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-[32px] bg-[#111111] px-6 py-8 text-white shadow-[0_18px_50px_rgba(0,0,0,0.12)] sm:rounded-[42px] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
+          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="text-sm font-medium text-white/60">
+                Ready To Explore?
+              </p>
+              <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
+                Enter a recruiting experience that feels premium from the first click.
+              </h2>
+              <p className="mt-5 text-base leading-8 text-white/70 sm:text-lg">
+                Start with pricing, activate the subscription flow, and move into
+                a coach-facing workspace built for focus.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
               <Link
                 href="/pricing"
-                className="mt-8 inline-flex rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
+                className="rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition-all duration-300 hover:-translate-y-0.5"
               >
-                View Pricing
+                Start With Pricing
+              </Link>
+
+              <Link
+                href="/login"
+                className="rounded-full bg-white/10 px-6 py-3.5 text-sm font-medium text-white ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Coach Login
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="border-y border-black/5 bg-white/50 py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-10 flex items-end justify-between gap-6">
-            <div>
-              <p className="text-sm font-medium text-[#6e6e73]">Experience</p>
-              <h2 className="mt-2 text-4xl font-semibold tracking-[-0.03em]">
-                A more refined recruiting flow.
-              </h2>
-            </div>
-            <Link href="/dashboard" className="text-sm font-medium text-[#0066cc]">
-              View the dashboard
-            </Link>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-3">
-            <div className="rounded-[36px] bg-white p-8 shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
-              <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
-                Search + filter
-              </p>
-              <h3 className="mt-4 text-2xl font-semibold">
-                Find the right athlete quickly.
-              </h3>
-              <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
-                Filter by sport, gender, and country while keeping the interface clean and easy to scan.
-              </p>
-            </div>
-
-            <div className="rounded-[36px] bg-white p-8 shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
-              <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
-                Full profile context
-              </p>
-              <h3 className="mt-4 text-2xl font-semibold">
-                Academics and athletic performance together.
-              </h3>
-              <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
-                Coaches can evaluate GPA, graduation year, sport-specific notes, and bio in a single view.
-              </p>
-            </div>
-
-            <div className="rounded-[36px] bg-white p-8 shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
-              <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
-                Saved board
-              </p>
-              <h3 className="mt-4 text-2xl font-semibold">
-                Shortlist without the clutter.
-              </h3>
-              <p className="mt-4 text-[15px] leading-7 text-[#6e6e73]">
-                Save standout athletes and return to them later as your recruiting board evolves.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 }

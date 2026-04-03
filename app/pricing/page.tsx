@@ -8,7 +8,7 @@ export default function PricingPage() {
       price: "$99",
       period: "/month",
       description:
-        "A simple plan for individual coaches beginning to recruit internationally.",
+        "For individual coaches beginning to recruit internationally with more structure.",
       features: [
         "Coach-only athlete database access",
         "Search and filter athletes",
@@ -30,7 +30,7 @@ export default function PricingPage() {
         "Expanded athlete database access",
         "Advanced recruiting filters",
         "Priority onboarding support",
-        "Future CRM and request workflows",
+        "Coach notes and recruiting statuses",
       ],
       cta: "Choose Pro",
       href: "/checkout?plan=Pro",
@@ -41,45 +41,75 @@ export default function PricingPage() {
       price: "$499",
       period: "/month",
       description:
-        "For coaching staffs and athletic departments managing recruiting together.",
+        "For coaching staffs and departments managing recruiting collaboratively.",
       features: [
         "Everything in Pro",
-        "Multi-coach access",
-        "Shared recruiting board",
+        "Multi-coach access planning",
+        "Shared recruiting board workflow",
         "Admin-ready organization support",
-        "Future internal notes and collaboration tools",
+        "Future internal collaboration tools",
       ],
-      cta: "Contact for Team",
+      cta: "Choose Team",
       href: "/checkout?plan=Team",
       featured: false,
     },
   ];
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] px-6 pb-20 pt-4 text-[#1d1d1f]">
+    <main className="min-h-screen bg-[#f5f5f7] px-4 pb-16 pt-4 text-[#1d1d1f] sm:px-6 lg:px-8 lg:pb-20">
       <div className="mx-auto max-w-7xl">
         <AppNav active="pricing" />
 
-        <section className="rounded-[42px] bg-[linear-gradient(180deg,#ffffff,#f7f7f8)] px-8 py-12 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:px-12 sm:py-16">
+        <section className="rounded-[32px] bg-[linear-gradient(135deg,#ffffff_0%,#f7f7f8_55%,#ececef_100%)] px-6 py-8 shadow-[0_18px_50px_rgba(0,0,0,0.06)] sm:rounded-[42px] sm:px-8 sm:py-10 lg:px-12 lg:py-16">
           <div className="max-w-4xl">
             <p className="text-sm font-medium text-[#6e6e73]">Pricing</p>
-            <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-7xl">
-              Access the platform through a subscription plan.
+            <h1 className="mt-3 text-4xl font-semibold tracking-[-0.06em] sm:text-5xl lg:text-6xl xl:text-7xl">
+              Choose the subscription that fits your recruiting ambition.
             </h1>
-            <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6e6e73]">
-              In demo mode, choosing a plan takes you to checkout, where access
-              gets activated and the dashboard unlocks.
+            <p className="mt-5 max-w-3xl text-base leading-8 text-[#6e6e73] sm:text-lg lg:text-xl lg:leading-9">
+              RecruX is structured as a premium coach-facing product. Start with
+              the plan that matches your workflow, then move into a private
+              athlete evaluation experience built for focus.
             </p>
+          </div>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <div className="rounded-[24px] bg-white p-5 ring-1 ring-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b]">
+                Designed For
+              </p>
+              <p className="mt-2 text-[15px] leading-7 text-[#6e6e73]">
+                Coaches, recruiting staff, and programs evaluating international athletes.
+              </p>
+            </div>
+
+            <div className="rounded-[24px] bg-white p-5 ring-1 ring-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b]">
+                Includes
+              </p>
+              <p className="mt-2 text-[15px] leading-7 text-[#6e6e73]">
+                Athlete profiles, saved board, recruiting statuses, notes, and request workflows.
+              </p>
+            </div>
+
+            <div className="rounded-[24px] bg-white p-5 ring-1 ring-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b]">
+                Demo Flow
+              </p>
+              <p className="mt-2 text-[15px] leading-7 text-[#6e6e73]">
+                Select a plan, activate checkout, and move directly into the platform.
+              </p>
+            </div>
           </div>
         </section>
 
-        <section className="mt-10 grid gap-6 xl:grid-cols-3">
+        <section className="mt-8 grid gap-6 xl:grid-cols-3">
           {plans.map((plan) => (
             <article
               key={plan.name}
-              className={`rounded-[36px] p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 transition-all duration-500 hover:-translate-y-1.5 ${
+              className={`rounded-[32px] p-6 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 transition-all duration-500 hover:-translate-y-1.5 sm:rounded-[36px] sm:p-8 ${
                 plan.featured
-                  ? "bg-black text-white ring-black/10"
+                  ? "bg-[#111111] text-white ring-black/10 shadow-[0_18px_50px_rgba(0,0,0,0.12)]"
                   : "bg-white text-[#1d1d1f] ring-black/5"
               }`}
             >
@@ -148,6 +178,38 @@ export default function PricingPage() {
               </Link>
             </article>
           ))}
+        </section>
+
+        <section className="mt-8 rounded-[32px] bg-white px-6 py-8 ring-1 ring-black/5 shadow-[0_12px_36px_rgba(0,0,0,0.05)] sm:rounded-[42px] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
+          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="text-sm font-medium text-[#6e6e73]">
+                Still deciding?
+              </p>
+              <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
+                Start with the plan that matches your current recruiting volume.
+              </h2>
+              <p className="mt-5 text-base leading-8 text-[#6e6e73] sm:text-lg">
+                The experience is intentionally simple: choose a subscription,
+                activate access, and step straight into the recruiting platform.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/checkout?plan=Pro"
+                className="rounded-full bg-black px-6 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Start With Pro
+              </Link>
+              <Link
+                href="/login"
+                className="rounded-full bg-white px-6 py-3.5 text-sm font-medium text-[#1d1d1f] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Coach Login
+              </Link>
+            </div>
+          </div>
         </section>
       </div>
     </main>
