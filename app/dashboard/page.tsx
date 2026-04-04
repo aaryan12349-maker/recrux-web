@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppNav from "../../components/AppNav";
 import MockAthletePortrait from "../../components/MockAthletePortrait";
@@ -40,6 +40,144 @@ function statusClasses(status: AdminAthleteRecord["status"]) {
   }
 
   return "bg-[#f4f4f5] text-[#52525b]";
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+    >
+      <path
+        d="M5 7.5L10 12.5L15 7.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className="h-4 w-4"
+    >
+      <path
+        d="M4.5 10L8.2 13.7L15.5 6.5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function GlassDropdown({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (!rootRef.current) return;
+      if (!rootRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
+        {label}
+      </label>
+
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        className={[
+          "flex w-full items-center justify-between rounded-[22px] px-4 py-3 text-left text-[#1d1d1f] outline-none transition-all duration-300",
+          "border border-white/60 bg-white/55 shadow-[0_10px_30px_rgba(0,0,0,0.06)]",
+          "backdrop-blur-xl ring-1 ring-black/5 hover:bg-white/70",
+          open ? "scale-[1.01]" : "",
+        ].join(" ")}
+      >
+        <span>{value}</span>
+        <span className="text-[#6e6e73]">
+          <Chevron open={open} />
+        </span>
+      </button>
+
+      {open ? (
+        <div
+          className={[
+            "absolute left-0 right-0 top-[calc(100%+10px)] z-40 overflow-hidden rounded-[24px]",
+            "border border-white/70 bg-white/58 shadow-[0_24px_70px_rgba(0,0,0,0.14)]",
+            "backdrop-blur-2xl ring-1 ring-black/6",
+          ].join(" ")}
+        >
+          <div className="p-2">
+            {options.map((option) => {
+              const selected = option === value;
+
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => {
+                    onChange(option);
+                    setOpen(false);
+                  }}
+                  className={[
+                    "flex w-full items-center justify-between rounded-[18px] px-4 py-3 text-left text-base transition-all duration-200",
+                    selected
+                      ? "bg-white/72 text-[#111111] shadow-[0_6px_18px_rgba(0,0,0,0.06)]"
+                      : "text-[#3a3a3c] hover:bg-white/45",
+                  ].join(" ")}
+                >
+                  <span>{option}</span>
+                  <span className={selected ? "text-[#111111]" : "text-transparent"}>
+                    <CheckIcon />
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 export default function DashboardPage() {
@@ -166,50 +304,26 @@ export default function DashboardPage() {
               </div>
 
               <div className="space-y-4">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
-                    Sport
-                  </label>
-                  <select
-                    value={selectedSport}
-                    onChange={(event) => setSelectedSport(event.target.value)}
-                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none sm:rounded-[22px]"
-                  >
-                    {sports.map((sport) => (
-                      <option key={sport}>{sport}</option>
-                    ))}
-                  </select>
-                </div>
+                <GlassDropdown
+                  label="Sport"
+                  value={selectedSport}
+                  options={sports}
+                  onChange={setSelectedSport}
+                />
 
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
-                    Gender
-                  </label>
-                  <select
-                    value={selectedGender}
-                    onChange={(event) => setSelectedGender(event.target.value)}
-                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none sm:rounded-[22px]"
-                  >
-                    {genders.map((gender) => (
-                      <option key={gender}>{gender}</option>
-                    ))}
-                  </select>
-                </div>
+                <GlassDropdown
+                  label="Gender"
+                  value={selectedGender}
+                  options={genders}
+                  onChange={setSelectedGender}
+                />
 
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-[#3a3a3c]">
-                    Country
-                  </label>
-                  <select
-                    value={selectedCountry}
-                    onChange={(event) => setSelectedCountry(event.target.value)}
-                    className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-4 py-3 text-[#1d1d1f] outline-none sm:rounded-[22px]"
-                  >
-                    {countries.map((country) => (
-                      <option key={country}>{country}</option>
-                    ))}
-                  </select>
-                </div>
+                <GlassDropdown
+                  label="Country"
+                  value={selectedCountry}
+                  options={countries}
+                  onChange={setSelectedCountry}
+                />
 
                 <button
                   onClick={() => {
@@ -218,7 +332,7 @@ export default function DashboardPage() {
                     setSelectedGender("All");
                     setSelectedCountry("All Countries");
                   }}
-                  className="mt-2 w-full rounded-[20px] bg-black px-4 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5 sm:rounded-[22px]"
+                  className="mt-2 w-full rounded-[22px] bg-black px-4 py-3 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
                 >
                   Reset Filters
                 </button>
