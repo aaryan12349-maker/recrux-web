@@ -80,6 +80,31 @@ function CheckIcon() {
   );
 }
 
+function SearchIcon() {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className="h-5 w-5"
+    >
+      <circle
+        cx="9"
+        cy="9"
+        r="5.75"
+        stroke="currentColor"
+        strokeWidth="1.7"
+      />
+      <path
+        d="M13.5 13.5L17 17"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 function GlassDropdown({
   label,
   value,
@@ -343,13 +368,25 @@ export default function DashboardPage() {
           <section>
             <div className="mb-6 rounded-[28px] bg-white p-4 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[32px] sm:p-5">
               <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-                <input
-                  type="text"
-                  placeholder="Search athletes by name"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  className="w-full rounded-[20px] border border-black/8 bg-[#fafafc] px-5 py-3.5 text-[#1d1d1f] outline-none placeholder:text-[#8d8d92] sm:rounded-[22px] xl:max-w-2xl"
-                />
+                <div
+                  className={[
+                    "flex w-full items-center gap-3 rounded-[22px] px-4 py-3.5 text-[#1d1d1f]",
+                    "border border-white/60 bg-white/55 shadow-[0_10px_30px_rgba(0,0,0,0.06)]",
+                    "backdrop-blur-xl ring-1 ring-black/5 transition-all duration-300 hover:bg-white/70",
+                    "xl:max-w-2xl",
+                  ].join(" ")}
+                >
+                  <span className="text-[#6e6e73]">
+                    <SearchIcon />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Search athletes by name"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    className="w-full bg-transparent text-[#1d1d1f] outline-none placeholder:text-[#8d8d92]"
+                  />
+                </div>
 
                 <div className="self-start rounded-full bg-[#f5f5f7] px-4 py-2 text-sm font-medium text-[#6e6e73] xl:self-auto">
                   {filteredAthletes.length} athlete
