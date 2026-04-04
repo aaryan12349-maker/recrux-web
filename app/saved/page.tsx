@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppNav from "../../components/AppNav";
 import MockAthletePortrait from "../../components/MockAthletePortrait";
@@ -53,8 +53,9 @@ export default function SavedPage() {
     setAllowed(true);
   }, [router]);
 
-  const savedAthletes = allAthletes.filter((athlete) =>
-    savedIds.includes(athlete.id)
+  const savedAthletes = useMemo(
+    () => allAthletes.filter((athlete) => savedIds.includes(athlete.id)),
+    [allAthletes, savedIds]
   );
 
   if (!allowed) {
@@ -83,16 +84,17 @@ export default function SavedPage() {
           <div className="flex flex-col gap-8 xl:flex-row xl:items-start xl:justify-between">
             <div className="max-w-4xl">
               <p className="text-sm font-medium text-[#6e6e73]">Saved Board</p>
-              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl xl:text-7xl">
-                Keep your shortlist beautifully organized.
+              <h1 className="mt-3 max-w-5xl text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl xl:text-7xl">
+                Keep your shortlist organized with more clarity.
               </h1>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-[#6e6e73] sm:text-lg lg:text-xl lg:leading-9">
-                Save athletes you want to revisit, compare, or discuss with your
-                staff as you narrow your recruiting board.
+              <p className="mt-5 max-w-3xl text-base leading-8 text-[#6e6e73] sm:text-lg sm:leading-8 lg:text-xl lg:leading-9">
+                This is your active recruiting shortlist. Save strong prospects,
+                revisit them quickly, and keep your top evaluations in one clean
+                workspace.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:min-w-[220px]">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 xl:min-w-[360px]">
               <div className="rounded-[24px] bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px] sm:p-5">
                 <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b] sm:text-xs">
                   Saved
@@ -104,10 +106,23 @@ export default function SavedPage() {
 
               <div className="rounded-[24px] bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px] sm:p-5">
                 <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b] sm:text-xs">
-                  Ready
+                  Top Targets
                 </p>
                 <p className="mt-2 text-2xl font-semibold sm:text-3xl">
-                  {savedAthletes.filter((athlete) => athlete.status === "Top Target").length}
+                  {
+                    savedAthletes.filter(
+                      (athlete) => athlete.status === "Top Target"
+                    ).length
+                  }
+                </p>
+              </div>
+
+              <div className="rounded-[24px] bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/5 sm:rounded-[28px] sm:p-5">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[#86868b] sm:text-xs">
+                  Markets
+                </p>
+                <p className="mt-2 text-2xl font-semibold sm:text-3xl">
+                  {new Set(savedAthletes.map((athlete) => athlete.country)).size}
                 </p>
               </div>
             </div>
@@ -117,11 +132,13 @@ export default function SavedPage() {
         <div className="mt-8">
           {savedAthletes.length === 0 ? (
             <section className="rounded-[30px] bg-white p-8 shadow-[0_12px_36px_rgba(0,0,0,0.05)] ring-1 ring-black/5 sm:rounded-[36px] sm:p-10">
-              <h2 className="text-3xl font-semibold tracking-[-0.03em]">
+              <p className="text-sm font-medium text-[#6e6e73]">Saved Board</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em]">
                 No saved athletes yet.
               </h2>
-              <p className="mt-3 max-w-2xl text-base leading-8 text-[#6e6e73] sm:text-lg">
-                Browse profiles from the dashboard and tap Save Athlete to build your shortlist.
+              <p className="mt-4 max-w-2xl text-base leading-8 text-[#6e6e73] sm:text-lg">
+                Browse the dashboard, open profiles that stand out, and tap Save
+                Athlete to build your shortlist.
               </p>
               <Link
                 href="/dashboard"
@@ -134,13 +151,16 @@ export default function SavedPage() {
             <>
               <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                  <p className="text-sm font-medium text-[#6e6e73]">Saved Athletes</p>
+                  <p className="text-sm font-medium text-[#6e6e73]">
+                    Saved Athletes
+                  </p>
                   <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
                     Your active shortlist.
                   </h2>
                 </div>
                 <p className="max-w-md text-sm leading-6 text-[#6e6e73] lg:text-right">
-                  Use this board to keep your strongest prospects in view while you compare profiles and decide who deserves more follow-up.
+                  Return to your strongest prospects, compare profiles more
+                  calmly, and keep decision-ready athletes in one visible board.
                 </p>
               </div>
 
@@ -187,7 +207,9 @@ export default function SavedPage() {
                         <p className="text-[10px] uppercase tracking-[0.16em] text-[#8d8d92]">
                           Age
                         </p>
-                        <p className="mt-1 font-medium text-[#1d1d1f]">{athlete.age}</p>
+                        <p className="mt-1 font-medium text-[#1d1d1f]">
+                          {athlete.age}
+                        </p>
                       </div>
                       <div>
                         <p className="text-[10px] uppercase tracking-[0.16em] text-[#8d8d92]">
@@ -201,7 +223,9 @@ export default function SavedPage() {
                         <p className="text-[10px] uppercase tracking-[0.16em] text-[#8d8d92]">
                           GPA
                         </p>
-                        <p className="mt-1 font-medium text-[#1d1d1f]">{athlete.gpa}</p>
+                        <p className="mt-1 font-medium text-[#1d1d1f]">
+                          {athlete.gpa}
+                        </p>
                       </div>
                     </div>
 
@@ -212,7 +236,9 @@ export default function SavedPage() {
                     {athlete.coachNotes ? (
                       <div className="mt-5 rounded-[22px] bg-[#fff8e8] px-4 py-3 text-sm text-[#7a5d00] ring-1 ring-[#7a5d00]/10">
                         <p className="font-medium">Coach Notes</p>
-                        <p className="mt-1 line-clamp-2">{athlete.coachNotes}</p>
+                        <p className="mt-1 line-clamp-2">
+                          {athlete.coachNotes}
+                        </p>
                       </div>
                     ) : null}
 
